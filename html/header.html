@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="header.css">
+    <title>Document</title>
+</head>
+<body>
+    <header className="header">
+      <div className="title">
+        <Image className="imgLogo" src={logo} alt="zoz" width={300} height={300} />
+        <h1 className="name">CACCo</h1>
+      </div>
+      <nav className="nav">
+        <Link href="catalogo" className="button">Catálogo</Link>
+        <Link href="carrinho" className="button"><Image className="carrinho" src={carrinho} alt="Carrinho" fit /></Link>
+      </nav>
+    </header>
+</body>
+</html>
