@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login CECACCo</title>
-    <link rel="stylesheet" href="adm.css">
+    <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
     <header class="header">
         <div class="title">
-          <Image class="imgLogo" src="./images/logo.svg" alt="logoCA" width={300} height={300} />
-          <h1 class="name">CACCo</h1>
+            <img class="imgLogo" src="./images/logo.svg" alt="logoCA" width={300} height={300} />
+            <div>
+                <h1 class="name">CACCo</h1>
+                <h5>Administrador</h5>
+            </div>
         </div>
         <nav class="nav">
-          <a href="catalogo" class="button">Catálogo</a>
-          <a href="carrinho" class="button"><Image class="carrinho" src="./images/carrinho.svg" alt="Carrinho" fit /></a>
+            <a href="login.html" class="button">Log out</a>
         </nav>
-      </header>
-      <div class="retpedidos">
-        <Image class="adm" src="./images/relatorios.png"/> 
-        <Image class="adm" src="./images/estoque.png"/>
-        <Image class="adm" src="./images/pedidos.png"/>
-        <a>RELATÓRIOS</a>
-        <a>ESTOQUE</a>
-        <a>PEDIDOS</a>
-      </div>
+    </header>
+    <main class="menu">
+        <a>
+            <img class="imgBotao" src="./images/relatorios.png" alt="Relatórios" />
+            <p>Relatórios</p>
+        </a>
+        <a>
+            <img class="imgBotao" src="./images/estoque.png" alt="Estoque"/>
+            <p>Estoque</p>
+        </a>
+        <a>
+            <img class="imgBotao" src="./images/pedidos.png" alt="Pedidos"/>
+            <p>Pedidos</p>
+        </a>
+    </main>
 
 </body>
+
 </html>

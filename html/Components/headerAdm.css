@@ -20,6 +20,7 @@ body {
     color: whitesmoke;
     display: flex;
     font-family: 'Comfortaa', Comfortaa;
+    height: 15vh;
     justify-content: space-between;
 }
 

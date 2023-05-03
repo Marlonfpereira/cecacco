@@ -9,6 +9,7 @@ body {
     color: whitesmoke;
     display: flex;
     font-family: 'Comfortaa', Comfortaa;
+    height: 15vh;
     justify-content: space-between;
 }
 
@@ -37,7 +38,7 @@ body {
     border: 2px solid #307ABD;
     border-radius: 10px;
     color: whitesmoke;
-    padding: 10px;
+    padding: .5em;
     text-align: center;
     text-decoration: none;
 }
@@ -47,7 +48,11 @@ body {
     color: black;
 }
 
+#carrinho {
+    padding: .2em .5em;
+}
+
 .carrinho {
-    width: 35px;
-    height: 35px;
+    width: 1.5em;
+    /* height: 35px; */
 }

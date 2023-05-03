@@ -1,0 +1,90 @@
+ @font-face {
+     font-family: Inter;
+     src: url('../fonts/Inter-Regular.ttf');
+ }
+
+ @font-face {
+     font-family: Inter;
+     font-weight: bold;
+     src: url('../fonts/Inter-Bold.ttf');
+ }
+
+ body {
+     margin: 0;
+     background-color: #c7c7c7;
+ }
+
+ .header {
+     align-items: center;
+     background-color: #1E3C5A;
+     border-bottom: 5px solid #307ABD;
+     color: whitesmoke;
+     display: flex;
+     font-family: 'Comfortaa', Comfortaa;
+     height: 15vh;
+     justify-content: space-between;
+ }
+
+ .imgLogo {
+     width: 100px;
+     height: 100px;
+     margin: 10px;
+ }
+
+ .title {
+     align-items: center;
+     display: flex;
+     flex-wrap: wrap;
+     font-size: 1.6em;
+ }
+
+ .title h1 {
+     margin: 0;
+ }
+
+ .title h5 {
+     font-family: 'Inter', Inter;
+     font-weight: lighter;
+     margin: 0;
+ }
+
+ .menu {
+     background: whitesmoke;
+     border: 1px groove #d9d9d9;
+     border-radius: 10px;
+     display: flex;
+     height: 40vh;
+     justify-content: space-around;
+     margin: 15vh auto;
+     width: 20em;
+ }
+
+ .form {
+     display: flex;
+     font-family: 'Inter', Inter;
+     flex-direction: column;
+     justify-content: center;
+ }
+
+ .form input {
+    border: 2px solid #307ABD;
+    border-radius: 10px;
+    height: 2em;
+    margin-bottom: 1.5em;
+    width: 20em;
+ }
+
+ .form button {
+    align-self: center;
+     border: 2px solid #307ABD;
+     border-radius: 10px;
+     padding: 10px;
+     text-align: center;
+     text-decoration: none;
+     width: 10em;
+ }
+
+ .form button:hover {
+     background-color: #1E3C5A;
+     color: whitesmoke;
+ }
