@@ -1,8 +1,14 @@
+body {
+    margin: 0;
+}
+
 .header {
     align-items: center;
     background-color: #1E3C5A;
     border-bottom: 5px solid #307ABD;
+    color: whitesmoke;
     display: flex;
+    font-family: 'Comfortaa', Comfortaa;
     justify-content: space-between;
 }
 
@@ -18,10 +24,6 @@
     margin: 10px;
 }
 
-.name {
-    font-family: 'Comfortaa', Comfortaa;
-}
-
 .nav {
     align-items: center;
     display: flex;
@@ -34,8 +36,10 @@
 .button {
     border: 2px solid #307ABD;
     border-radius: 10px;
+    color: whitesmoke;
     padding: 10px;
     text-align: center;
+    text-decoration: none;
 }
 
 .button:hover {

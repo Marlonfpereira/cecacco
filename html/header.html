@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="header.css">
-    <title>Document</title>
+    <title>Header</title>
 </head>
 <body>
-    <header className="header">
-      <div className="title">
-        <Image className="imgLogo" src={logo} alt="zoz" width={300} height={300} />
-        <h1 className="name">CACCo</h1>
+    <header class="header">
+      <div class="title">
+        <Image class="imgLogo" src="./images/logo.svg" alt="logoCA" width={300} height={300} />
+        <h1 class="name">CACCo</h1>
       </div>
-      <nav className="nav">
-        <Link href="catalogo" className="button">Catálogo</Link>
-        <Link href="carrinho" className="button"><Image className="carrinho" src={carrinho} alt="Carrinho" fit /></Link>
+      <nav class="nav">
+        <a href="catalogo" class="button">Catálogo</a>
+        <a href="carrinho" class="button"><Image class="carrinho" src="./images/carrinho.svg" alt="Carrinho" fit /></a>
       </nav>
     </header>
 </body>
