@@ -1,53 +1,29 @@
-@font-face {
-  font-family: Inter;
-  src: url("../fonts/Inter-Regular.ttf");
-}
+<template>
+  <div>
+    <HeaderAdm :is-logged="false"></HeaderAdm>
+    <main class="menu">
+      <form class="form" action="get">
+        <label for="username">Nome de Usuário:</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Senha:</label>
+        <input type="password" name="password" id="password">
+        <button type="submit"><a href="./#/admin">Log In</a></button>
+      </form>
+    </main>
+  </div>
+</template>
 
-@font-face {
-  font-family: Inter;
-  font-weight: bold;
-  src: url("../fonts/Inter-Bold.ttf");
+<script>
+import HeaderAdm from '@/components/HeaderAdm.vue'
+export default {
+  name: 'Login',
+  components: {
+    HeaderAdm
+  }
 }
+</script>
 
-body {
-  margin: 0;
-  background-color: #c7c7c7;
-}
-
-.header {
-  align-items: center;
-  background-color: #1e3c5a;
-  border-bottom: 5px solid #307abd;
-  color: whitesmoke;
-  display: flex;
-  font-family: "Comfortaa", Comfortaa;
-  height: 15vh;
-  justify-content: space-between;
-}
-
-.imgLogo {
-  width: 100px;
-  height: 100px;
-  margin: 10px;
-}
-
-.title {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 1.6em;
-}
-
-.title h1 {
-  margin: 0;
-}
-
-.title h5 {
-  font-family: "Inter", Inter;
-  font-weight: lighter;
-  margin: 0;
-}
-
+<style scoped>
 .menu {
   background: whitesmoke;
   border: 1px groove #d9d9d9;
@@ -99,3 +75,5 @@ body {
   border: 2px solid #32ACE2;
   border-radius: 10px;
 }
+
+</style>
