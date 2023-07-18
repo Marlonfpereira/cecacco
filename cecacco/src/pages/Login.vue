@@ -2,12 +2,15 @@
   <div>
     <HeaderAdm :is-logged="false"></HeaderAdm>
     <main class="menu">
-      <form class="form" action="get">
+      <form class="form" >
         <label for="username">Nome de Usuário:</label>
         <input type="text" name="username" id="username">
         <label for="password">Senha:</label>
         <input type="password" name="password" id="password">
-        <button type="submit"><a href="./#/admin">Log In</a></button>
+
+        <button @click="submitLoginUser" class="btn btn-primary btn-block w-75 my-4">
+          Entrar
+        </button>
       </form>
     </main>
   </div>
@@ -67,7 +70,7 @@ export default {
 
 .form button a {
   text-decoration: none;
-  color : whitesmoke;
+  color: whitesmoke;
 }
 
 .form button:hover {
@@ -75,5 +78,4 @@ export default {
   border: 2px solid #32ACE2;
   border-radius: 10px;
 }
-
 </style>
