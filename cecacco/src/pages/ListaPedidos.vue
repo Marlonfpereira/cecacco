@@ -9,6 +9,7 @@
           <div>
             <p>Filtro:</p>
             <select name="" id="">
+              <option value="none">Nenhum</option>
               <option value="entregue">Entregue</option>
               <option value="pago">Pago</option>
               <option value="comunicado">Comunicado</option>
@@ -18,27 +19,36 @@
           </div>
         </div>
         <div class="scroll">
-          <div class="produto" v-for="prod in listaProdutos" :key="prod.index">
+          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id">
             <div class="info">
-              <img :src="prod.img" alt="imagemProduto">
-              <span>{{ prod.nome }}</span>
+              <span>{{ pedido.id }}</span>
+              <span>{{ pedido.cliente }}</span>
             </div>
             <div class="valores">
               <div class="atributos">
-                <span>Preço de Custo</span>
-                <span class="valor">R${{ prod.custo }}</span>
+                <span class="valor">R${{ pedido.valorPago }}</span>
               </div>
-              <div class="atributos">
-                <span>Preço de Venda</span>
-                <span class="valor">R${{ prod.preco }}</span>
-              </div>
-              <div class="atributos">
-                <span>Quantidade</span>
-                <span class="valor">{{ prod.quant }}</span>
-              </div>
-              <div class="atributos">
-                <span>Disponível</span>
-                <input type="checkbox" v-model="prod.disp">
+              <div class="atributos estados">
+                <div class="status" v-if="pedido.status == 0">
+                  <div class="circle" style="background-color: #44b865;"></div>
+                  <p>Entregue</p>
+                </div>
+                <div class="status" v-if="pedido.status == 1">
+                  <div class="circle" style="background-color: #32ace2;"></div>
+                  <p>Pago</p>
+                </div>
+                <div class="status" v-if="pedido.status == 2">
+                  <div class="circle" style="background-color: #ffee00;"></div>
+                  <p>Comunicado</p>
+                </div>
+                <div class="status" v-if="pedido.status == 3">
+                  <div class="circle" style="background-color: #808080;"></div>
+                  <p>Pendente</p>
+                </div>
+                <div class="status" v-if="pedido.status == 4">
+                  <div class="circle" style="background-color: #e23232;"></div>
+                  <p>Cancelado</p>
+                </div>
               </div>
             </div>
           </div>
@@ -50,28 +60,24 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
-import { Produto } from '@/models/Produto.js'
+import { Pedido } from '@/models/Pedido.js'
 
-var produto = new Produto()
-produto.img = 'https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg'
-produto.nome = 'teste'
-produto.index = 'a'
-produto.custo = 50.5
-produto.preco = 79.9
-produto.quant = 3
-produto.disp = true
+var pedido = new Pedido()
+pedido.id = '0001'
+pedido.cliente = 'Fulano da Silva'
+pedido.valorPago = 125.50
+pedido.status = 0
 
 var lista = []
-lista.push(produto)
-produto.index = 'b'
-lista.push(produto)
-produto.index = 'c'
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
+lista.push(Object.assign({}, pedido))
+pedido.status = 1
+lista.push(Object.assign({}, pedido))
+pedido.status = 2
+lista.push(Object.assign({}, pedido))
+pedido.status = 3
+lista.push(Object.assign({}, pedido))
+pedido.status = 4
+lista.push(Object.assign({}, pedido))
 
 export default {
   name: 'Pedidos',
@@ -81,7 +87,7 @@ export default {
   props: ['lista'],
   data () {
     return {
-      listaProdutos: lista
+      listaPedidos: lista
     }
   }
 }
@@ -155,7 +161,7 @@ main {
   height: 2.5em;
 }
 
-.produto {
+.pedido {
   border-bottom: 2px solid #d9d9d9;
   display: flex;
   justify-content: space-between;
@@ -168,12 +174,6 @@ main {
   justify-self: flex-start;
 }
 
-.info img {
-  border: 1px solid #d9d9d9;
-  border-radius: 10px;
-  width: 4em;
-}
-
 .info span {
   font-weight: bold;
   margin-left: 1em;
@@ -184,8 +184,9 @@ main {
   column-gap: .4em;
   display: grid;
   font-size: .8em;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  width: 70%;
+  grid-template-columns: 1fr 1fr;
+  justify-items: flex-end;
+  width: 50%;
 }
 
 .atributos {
@@ -195,8 +196,22 @@ main {
   text-align: center;
 }
 
-.valor {
-  font-weight: bold;
-  font-size: 1em;
+.estados {
+  background: #D9D9D9;
+  border-radius: 10px;
+  padding: 0 1em;
+  min-width: 8em;
+}
+
+.status {
+  align-items: center;
+  display: flex;
+}
+
+.circle {
+  border-radius: 30px;
+  height: 15px;
+  margin-right: 5px;
+  width: 15px;
 }
 </style>
