@@ -1,6 +1,6 @@
-export class Pedido {
-    constructor() {
-        this.username = "",
-        this.password = ""
-    }
+export class User {
+  constructor () {
+    this.username = ''
+    this.password = ''
+  }
 }

@@ -8,7 +8,7 @@
         <label for="password">Senha:</label>
         <input type="password" name="password" id="password">
 
-        <button @click="submitLoginUser" class="btn btn-primary btn-block w-75 my-4">
+        <button @click="submitLoginUser">
           Entrar
         </button>
       </form>
@@ -18,10 +18,19 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
+import { User } from '@/models/User'
 export default {
   name: 'Login',
   components: {
     HeaderAdm
+  },
+  methods: {
+    submitLoginUser () {
+      var usuario = new User()
+      usuario.username = document.getElementById('username').value
+      usuario.password = document.getElementById('password').value
+      console.log(usuario)
+    }
   }
 }
 </script>
@@ -66,9 +75,6 @@ export default {
   text-align: center;
   text-decoration: none;
   width: 10em;
-}
-
-.form button a {
   text-decoration: none;
   color: whitesmoke;
 }
