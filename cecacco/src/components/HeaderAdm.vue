@@ -31,6 +31,16 @@ export default {
   font-weight: bold;
   src: url('../assets/Inter-Bold.ttf');
 }
+@font-face {
+  font-family: Comfortaa;
+  src: url('../assets/Comfortaa-Regular.ttf');
+}
+
+@font-face {
+  font-family: Comfortaa;
+  font-weight: bold;
+  src: url('../assets/Comfortaa-Bold.ttf');
+}
 
 .header {
   align-items: center;

@@ -3,7 +3,7 @@ export class Produto {
     this.nome = ''
     this.descricao = ''
     this.index = ''
-    this.img = ''
+    this.imgs = []
     this.cor = false
     this.tamanho = false
     this.cores = []

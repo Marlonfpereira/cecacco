@@ -96,6 +96,7 @@ main {
 
 .return {
   margin: 2em 0 0 0;
+  height: fit-content;
 }
 
 .return:hover {

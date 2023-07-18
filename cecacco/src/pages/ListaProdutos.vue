@@ -10,7 +10,7 @@
         <div class="scroll">
           <div class="produto" v-for="prod in listaProdutos" :key="prod.index">
             <div class="info">
-              <img :src="prod.img" alt="imagemProduto">
+              <img :src="prod.imgs[0]" alt="imagemProduto">
               <span>{{ prod.nome }}</span>
             </div>
             <div class="valores">
@@ -43,7 +43,7 @@ import HeaderAdm from '@/components/HeaderAdm.vue'
 import { Produto } from '@/models/Produto.js'
 
 let produto = new Produto()
-produto.img = 'https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg'
+produto.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg')
 produto.nome = 'teste'
 produto.index = 'a'
 produto.custo = 50.5
@@ -84,6 +84,7 @@ main {
 
 .return {
   margin: 2em 0 0 0;
+  height: fit-content;
 }
 
 .return:hover {
