@@ -2,11 +2,11 @@
   <div>
     <HeaderAdm :is-logged="false"></HeaderAdm>
     <main class="menu">
-      <form class="form" >
+      <form class="form" v-on:submit.prevent="loginSubmitUserForm()">
         <label for="username">Nome de Usuário:</label>
-        <input type="text" name="username" id="username">
+        <input type="text" name="username" id="username" v-model="loginForm.username">
         <label for="password">Senha:</label>
-        <input type="password" name="password" id="password">
+        <input type="password" name="password" id="password" v-model="loginForm.password">
 
         <button @click="submitLoginUser">
           Entrar
@@ -18,19 +18,39 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
-import { User } from '@/models/User'
+import LoginService from '@/services/LoginService'
 export default {
   name: 'Login',
   components: {
     HeaderAdm
   },
-  methods: {
-    submitLoginUser () {
-      var usuario = new User()
-      usuario.username = document.getElementById('username').value
-      usuario.password = document.getElementById('password').value
-      console.log(usuario)
+  data () {
+    return {
+      loginForm: {
+        username: null,
+        password: null
+      },
+      isSubmitted: false
     }
+  },
+  methods: {
+    async submitLoginUser () {
+      try {
+        this.isSubmitted = true
+
+        // this.$v.$touch()
+        // if (this.$v.$invalid) {
+        //   console.log('Valores incompletos')
+        //   return
+        // }
+        console.log('oi')
+        await LoginService.loginUser(this.loginForm)
+        this.$router.push('/admin')
+      } catch (error) {
+        console.log('Valores incorretos')
+      }
+    },
+    loginSubmitUserForm () {}
   }
 }
 </script>

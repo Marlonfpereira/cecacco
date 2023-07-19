@@ -8,7 +8,7 @@
       </div>
     </div>
     <nav class="nav">
-      <a href="catalogo" v-if="isLogged" class="button">Log out</a>
+      <a href="/" v-if="isLogged" class="button">Log out</a>
     </nav>
   </header>
 </template>
