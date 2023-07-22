@@ -6,6 +6,7 @@ import Relatorios from '@/pages/Relatorios'
 import Produtos from '@/pages/ListaProdutos'
 import Pedidos from '@/pages/ListaPedidos'
 import AddProduto from '@/pages/AddProduto'
+import InfoPedido from '@/pages/InfoPedido'
 
 Vue.use(Router)
 
@@ -40,6 +41,12 @@ export default new Router({
       path: '/addProduto',
       name: 'AddProduto',
       component: AddProduto
+    },
+    {
+      path: '/infoPedido/:pedidoAtual',
+      name: 'InfoPedido',
+      props: true,
+      component: InfoPedido
     }
   ]
 })

@@ -1,35 +1,36 @@
 <template>
   <div>
-    <HeaderAdm :is-logged="true"></HeaderAdm>
+    <HeaderAdm :is-logged="false"></HeaderAdm>
     <main>
       <a class="return" v-on:click="cancelar"><img src="@/assets/voltar.svg" alt="return"></a>
       <section class="menu">
         <div class="infos">
           <label for="nome">Nome</label>
-          <input type="text" id="nome">
+          <input type="text" id="nome" v-model="produtoNovo.nome">
           <label for="descricao">Descrição</label>
-          <textarea id="descricao" cols="30" rows="4"></textarea>
+          <textarea id="descricao" cols="30" rows="4" v-model="produtoNovo.descricao"></textarea>
           <div class="horizontal">
             <div class="preco">
               <label for="custo">Preço de custo</label>
-              <input type="number" id="custo">
+              <input type="number" id="custo" v-model.number="produtoNovo.custo">
             </div>
             <div class="preco">
               <label for="preco">Preço de venda</label>
-              <input type="number" id="preco">
+              <input type="number" id="preco" v-model.number="produtoNovo.preco">
             </div>
             <div class="preco">
               <label for="quant">Quantidade</label>
-              <input type="number" id="quant">
+              <input type="number" id="quant" v-model.number="produtoNovo.quant">
             </div>
             <div class="disp">
               <label for="disponivel">Disponível</label>
-              <input type="checkbox" id="disponivel">
+              <input type="checkbox" id="disponivel" v-model="produtoNovo.disponivel">
             </div>
           </div>
           <p>Fotos</p>
           <div class="fotos">
-            <img v-for="link in listaImgs" :key="listaImgs.indexOf(link)" :src="link" alt="Imagem do produto" v-on:click="deletarFoto(link)">
+            <img v-for="link in listaImgs" :key="listaImgs.indexOf(link)" :src="link" alt="Imagem do produto"
+              v-on:click="deletarFoto(link)">
             <img src="@/assets/addPhoto.svg" alt="addButton" v-on:click="addFoto">
           </div>
         </div>
@@ -59,7 +60,7 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
-import { Produto } from '@/models/Produto'
+// import { Produto } from '@/models/Produto'
 
 export default {
   name: 'AddProduto',
@@ -70,7 +71,21 @@ export default {
     return {
       listaTam: [],
       listaCor: [],
-      listaImgs: []
+      listaImgs: [],
+      produtoNovo: {
+        nome: '',
+        descricao: '',
+        index: '',
+        imgs: [],
+        cor: false,
+        tamanho: false,
+        cores: [],
+        tamanhos: [],
+        disponivel: false,
+        quant: 0,
+        custo: 0,
+        preco: 0
+      }
     }
   },
   methods: {
@@ -111,20 +126,26 @@ export default {
       }
     },
     addProduto () {
-      var prod = new Produto()
-      prod.nome = document.getElementById('nome').value
-      prod.descricao = document.getElementById('descricao').value
-      prod.index = prod.nome.toUpperCase()
-      prod.imgs = this.listaImgs
-      prod.cor = this.listaCor.length > 0
-      prod.tamanho = this.listaTam.length > 0
-      prod.cores = this.listaCor
-      prod.tamanhos = this.listaTam
-      prod.disponivel = document.getElementById('disponivel').value
-      prod.quant = document.getElementById('quant').value
-      prod.custo = document.getElementById('custo').value
-      prod.preco = document.getElementById('preco').value
-      console.log(prod)
+      // var prod = new Produto()
+      // prod.nome = document.getElementById('nome').value
+      // prod.descricao = document.getElementById('descricao').value
+      // prod.index = prod.nome.toUpperCase()
+      // prod.imgs = this.listaImgs
+      // prod.cor = this.listaCor.length > 0
+      // prod.tamanho = this.listaTam.length > 0
+      // prod.cores = this.listaCor
+      // prod.tamanhos = this.listaTam
+      // prod.disponivel = document.getElementById('disponivel').value
+      // prod.quant = document.getElementById('quant').value
+      // prod.custo = document.getElementById('custo').value
+      // prod.preco = document.getElementById('preco').value
+      // console.log(prod)
+      this.produtoNovo.cor = this.listaCor.length > 0
+      this.produtoNovo.tamanho = this.listaTam.length > 0
+      this.produtoNovo.cores = this.listaCor
+      this.produtoNovo.tamanhos = this.listaTam
+      this.produtoNovo.imgs = this.listaImgs
+      console.log(this.produtoNovo)
     }
   }
 }
@@ -295,4 +316,5 @@ main {
 
 *:hover {
   transition: .1s ease-in-out;
-}</style>
+}
+</style>

@@ -80,6 +80,7 @@ body {
   flex-basis: 60%;
   font-family: "Inter", Inter;
   font-size: 1.5em;
+  margin: 0;
   text-decoration: none;
 }
 

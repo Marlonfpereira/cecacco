@@ -60,6 +60,8 @@ lista.push(produto)
 lista.push(produto)
 lista.push(produto)
 lista.push(produto)
+lista.push(produto)
+lista.push(produto)
 
 export default {
   name: 'Produtos',
@@ -112,7 +114,7 @@ main {
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow-y: scroll;
-  height: calc(100% - 3.5em);
+  height: calc(72vh - 6em);
 }
 
 .scroll::-webkit-scrollbar {

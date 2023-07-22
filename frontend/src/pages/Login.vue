@@ -38,11 +38,6 @@ export default {
       try {
         this.isSubmitted = true
 
-        // this.$v.$touch()
-        // if (this.$v.$invalid) {
-        //   console.log('Valores incompletos')
-        //   return
-        // }
         console.log('oi')
         await LoginService.loginUser(this.loginForm)
         this.$router.push('/admin')
@@ -64,7 +59,7 @@ export default {
   height: 40vh;
   justify-content: space-around;
   margin: 15vh auto;
-  width: 20em;
+  width: 30vw;
 }
 
 .form {
