@@ -4,9 +4,7 @@ const router = express.Router();
 
 
 const CreateProduto = async (req, res) => {
-
     let produto = new Produto(req.body)
-
     try {
         console.log(produto);
         let doc = await produto.save()
@@ -17,4 +15,28 @@ const CreateProduto = async (req, res) => {
     }
 };
 
-module.exports = CreateProduto;
+
+const AllProdutos = async (req, res)=>{
+    try {
+        let produtos = await Produto.find({});
+        res.render('all', { produtos })
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+const deleteProduto = async (req, res) => {
+
+    let id = req.params.id;
+    if (!id) {
+        id = req.body.id;
+    }
+    try {
+        await Link.findByIdAndDelete(id)
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+
+module.exports = {CreateProduto, AllProdutos, deleteProduto};

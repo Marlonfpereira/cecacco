@@ -1,6 +1,6 @@
 const express = require('express');
 const loginAdmin = require('./login.controller')
-const CreateProduto = require('./produto.controller')
+const ProdutoControle = require('./produto.controller')
 const router = express.Router();
 
 
@@ -10,8 +10,14 @@ router.post('/admin/login', (req, res) => {
 });
 
 router.post('/admin/addProduto', (req, res) => {
-    CreateProduto(req, res);
-    console.log("login efetuado com sucesso");
+    ProdutoControle.CreateProduto(req, res);
 })
+
+router.get('./admin/gerenciaEstoque',(req, res) => {
+    ProdutoControle.AllProdutos(req,res);
+    console.log(res)
+})
+
+
 
 module.exports = router;
