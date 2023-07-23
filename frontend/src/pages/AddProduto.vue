@@ -60,7 +60,8 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
-// import { Produto } from '@/models/Produto'
+import CreateProduto from '../services/CreateProdutoService'
+
 
 export default {
   name: 'AddProduto',
@@ -89,6 +90,7 @@ export default {
     }
   },
   methods: {
+   
     addTamanho () {
       var tamanho = prompt('Adicionar:')
       this.listaTam.push(tamanho.toUpperCase())
@@ -125,7 +127,7 @@ export default {
         this.$router.back()
       }
     },
-    addProduto () {
+   async addProduto () {
       // var prod = new Produto()
       // prod.nome = document.getElementById('nome').value
       // prod.descricao = document.getElementById('descricao').value
@@ -146,6 +148,16 @@ export default {
       this.produtoNovo.tamanhos = this.listaTam
       this.produtoNovo.imgs = this.listaImgs
       console.log(this.produtoNovo)
+
+      try {
+        this.isSubmitted = true
+
+        await CreateProduto.createProduto(this.produtoNovo)
+        this.$router.push('/admin')
+      } catch (error) {
+        console.log('Valores incorretos')
+      }
+
     }
   }
 }

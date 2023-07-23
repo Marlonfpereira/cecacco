@@ -38,7 +38,6 @@ export default {
       try {
         this.isSubmitted = true
 
-        console.log('oi')
         await LoginService.loginUser(this.loginForm)
         this.$router.push('/admin')
       } catch (error) {

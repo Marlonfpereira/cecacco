@@ -3,7 +3,7 @@ const Login = require('../models/adminLogin.model');
 
 // Função para lidar com a requisição de login
 const loginController = async (req, res) => {
-    console.log(req)
+
 
     const { username, password } = req.body;
 
