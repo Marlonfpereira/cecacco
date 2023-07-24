@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 // Crie um subesquema para representar as variações de um produto
 const variacoesSchema = new mongoose.Schema({
-    cores: { type: String, required: true },
-    tamanhos: { type: String, required: true },
+    cores: { type: String, required: true, default: "" },
+    tamanhos: { type: String, required: true, default: ""},
     // Outras variações que você deseja incluir
 });
 
@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'produtos', required: true },
     quantidade: { type: Number, required: true },
     preco: { type: Number, required: true },
-    variations: [variacoesSchema], // Array de variações do produto
+    variations: variacoesSchema, // Array de variações do produto
 });
 
 // Crie o esquema de pedidos
