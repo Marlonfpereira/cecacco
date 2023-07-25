@@ -21,8 +21,9 @@ const pedidoSchema = new mongoose.Schema({
     email: { type: String, required: true },
     telefone: { type: String, required: true },
     totalPreco: { type: Number, required: true },
-    produtos: [productSchema], 
+    produtos: [productSchema],
     Data: { type: Date, default: Date.now },
+    estado: { type: Number, min: 0, max: 3, required: true},
 }, { collection: 'pedidos' });
 
 const Pedido = mongoose.model('Pedido', pedidoSchema);
