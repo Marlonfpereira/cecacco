@@ -1,16 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/pages/Login'
-import Admin from '@/pages/Admin'
-import Relatorios from '@/pages/Relatorios'
-import Produtos from '@/pages/ListaProdutos'
-import Pedidos from '@/pages/ListaPedidos'
-import AddProduto from '@/pages/AddProduto'
-import InfoPedido from '@/pages/InfoPedido'
+import { createRouter, createWebHistory } from 'vue-router'
+import Login from '@/pages/Login.vue'
+import Admin from '@/pages/Admin.vue'
+import Relatorios from '@/pages/Relatorios.vue'
+import Produtos from '@/pages/ListaProdutos.vue'
+import Pedidos from '@/pages/ListaPedidos.vue'
+import AddProduto from '@/pages/AddProduto.vue'
+import InfoPedido from '@/pages/InfoPedido.vue'
 
-Vue.use(Router)
-
-export default new Router({
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -50,3 +48,5 @@ export default new Router({
     }
   ]
 })
+
+export default router

@@ -2,7 +2,7 @@
   <div>
     <HeaderAdm :is-logged="true"></HeaderAdm>
     <main>
-      <a class="return" href="./#/admin"><img src="@/assets/voltar.svg" alt="return"></a>
+      <a class="return" href="./admin"><img src="@/assets/voltar.svg" alt="return"></a>
       <section class="menu">
         <div class="titulo">
           <h1>Produtos</h1>

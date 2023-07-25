@@ -90,8 +90,8 @@ export default {
     }
   },
   methods: {
-
-    addTamanho() {
+   
+    addTamanho () {
       var tamanho = prompt('Adicionar:')
       this.listaTam.push(tamanho.toUpperCase())
     },
