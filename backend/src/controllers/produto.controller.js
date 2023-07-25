@@ -19,7 +19,7 @@ const CreateProduto = async (req, res) => {
 const AllProdutos = async (req, res)=>{
     try {
         let produtos = await Produto.find({});
-        res.render('all', { produtos })
+        return res.status(200).json(produtos)
     } catch (error) {
         res.send(error);
     }

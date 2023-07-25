@@ -6,18 +6,13 @@ const router = express.Router();
 
 
 // Rota para processar o login
-router.post('/admin/login', (req, res) => {
-    loginAdmin(req, res);
-});
+router.post('/admin/login', loginAdmin);
 
-router.post('/admin/addProduto', (req, res) => {
-    ProdutoControle.CreateProduto(req, res);
-})
+router.post('/admin/addProduto',  ProdutoControle.CreateProduto)
 
-router.get('/admin/gerenciaEstoque',(req, res) => {
-    ProdutoControle.AllProdutos(req,res);
-    console.log(res)
-})
+router.get('/catalogo', ProdutoControle.AllProdutos)
+
+router.get('/admin/gerenciaEstoque', ProdutoControle.AllProdutos)
 
 router.get('/admin/pedidos', PedidoControle.AllPedidos);
 router.patch('/admin/pedidos/:id', PedidoControle.UpdatePedido);

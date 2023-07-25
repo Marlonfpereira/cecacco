@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require('mongoose');
 const router = require('./controllers/router.controller')
 const cors = require("cors");
-const teste = require('./teste')
 
 const database = require('./config/db.config')
 
@@ -28,8 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.json({ type: "application/vnd.api+json" }));
 app.use(cors());
-
-teste();
 
 app.use('/',router)
 
