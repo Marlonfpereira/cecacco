@@ -23,7 +23,13 @@ const pedidoSchema = new mongoose.Schema({
     totalPreco: { type: Number, required: true },
     produtos: [productSchema],
     Data: { type: Date, default: Date.now },
-    estado: { type: Number, min: 0, max: 3, required: true},
+    // Estados possíveis:
+    // 0 - Cancelado
+    // 1 - Pendente
+    // 2 - Comunicado
+    // 3 - Pago
+    // 4 - Entregue
+    estado: { type: Number, min: 0, max: 4, required: true},
 }, { collection: 'pedidos' });
 
 const Pedido = mongoose.model('Pedido', pedidoSchema);
