@@ -2,19 +2,19 @@
   <div>
     <HeaderAdm :is-logged="true"></HeaderAdm>
     <main class="menu">
-      <a href="./#/addProduto">
+      <a href="./addProduto">
         <img class="imgBotao" src="@/assets/addProduct.png" alt="Estoque" />
         <p>Adicionar Produto</p>
       </a>
-      <a href="./#/produtos">
+      <a href="./produtos">
         <img class="imgBotao" src="@/assets/estoque.png" alt="Estoque" />
         <p>Gerenciar Estoque</p>
       </a>
-      <a href="./#/pedidos">
+      <a href="./pedidos">
         <img class="imgBotao" src="@/assets/pedidos.png" alt="Pedidos" />
         <p>Gerenciar Pedidos</p>
       </a>
-      <a href="./#/relatorios">
+      <a href="./relatorios">
         <img class="imgBotao" src="@/assets/relatorios.png" alt="Relatórios" />
         <p>Gerar Relatórios</p>
       </a>
