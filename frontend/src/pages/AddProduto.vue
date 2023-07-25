@@ -60,7 +60,7 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
-import CreateProduto from '../services/CreateProdutoService'
+import ProdutosService from '../services/ProdutosService'
 
 
 export default {
@@ -68,7 +68,7 @@ export default {
   components: {
     HeaderAdm
   },
-  data () {
+  data() {
     return {
       listaTam: [],
       listaCor: [],
@@ -90,58 +90,44 @@ export default {
     }
   },
   methods: {
-   
-    addTamanho () {
+
+    addTamanho() {
       var tamanho = prompt('Adicionar:')
       this.listaTam.push(tamanho.toUpperCase())
     },
-    deletarTamanho (tam) {
+    deletarTamanho(tam) {
       var confirma = confirm('Deletar ' + tam + '?')
       if (confirma) {
         this.listaTam.splice(this.listaTam.indexOf(tam), 1)
       }
     },
-    addCor () {
+    addCor() {
       var cor = prompt('Adicionar:')
       this.listaCor.push(cor)
     },
-    deletarCor (cor) {
+    deletarCor(cor) {
       var confirma = confirm('Deletar ' + cor + '?')
       if (confirma) {
         this.listaCor.splice(this.listaCor.indexOf(cor), 1)
       }
     },
-    addFoto () {
+    addFoto() {
       var link = prompt('Link:')
       this.listaImgs.push(link)
     },
-    deletarFoto (link) {
+    deletarFoto(link) {
       var confirma = confirm('Deletar a imagem?')
       if (confirma) {
         this.listaImgs.splice(this.listaImgs.indexOf(link), 1)
       }
     },
-    cancelar () {
+    cancelar() {
       var confirma = confirm('Abandonar alterações?')
       if (confirma) {
         this.$router.back()
       }
     },
-   async addProduto () {
-      // var prod = new Produto()
-      // prod.nome = document.getElementById('nome').value
-      // prod.descricao = document.getElementById('descricao').value
-      // prod.index = prod.nome.toUpperCase()
-      // prod.imgs = this.listaImgs
-      // prod.cor = this.listaCor.length > 0
-      // prod.tamanho = this.listaTam.length > 0
-      // prod.cores = this.listaCor
-      // prod.tamanhos = this.listaTam
-      // prod.disponivel = document.getElementById('disponivel').value
-      // prod.quant = document.getElementById('quant').value
-      // prod.custo = document.getElementById('custo').value
-      // prod.preco = document.getElementById('preco').value
-      // console.log(prod)
+    async addProduto() {
       this.produtoNovo.cor = this.listaCor.length > 0
       this.produtoNovo.tamanho = this.listaTam.length > 0
       this.produtoNovo.cores = this.listaCor
@@ -151,8 +137,9 @@ export default {
 
       try {
         this.isSubmitted = true
-
-        await CreateProduto.createProduto(this.produtoNovo)
+        await ProdutosService.createProduto(this.produtoNovo)
+        let doc = await ProdutosService.showAllProdutos()
+        console.log(doc)
         this.$router.push('/admin')
       } catch (error) {
         console.log('Valores incorretos')

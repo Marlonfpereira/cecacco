@@ -12,5 +12,13 @@ export default {
         } catch (error) {
             this.$router.push('/erro')
         }
+    },
+    async showAllProdutos() {
+        try {
+            let doc = await Api().get('/catalogo')
+            return doc
+        } catch (error) {
+            this.$router.push('/erro')
+        }
     }
 }
