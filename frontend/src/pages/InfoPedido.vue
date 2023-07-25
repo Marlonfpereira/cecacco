@@ -51,7 +51,6 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
-// import { Pedido } from '@/models/Pedido'
 
 export default {
   name: 'InfoPedido',
