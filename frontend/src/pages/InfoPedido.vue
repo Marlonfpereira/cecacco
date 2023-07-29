@@ -6,14 +6,14 @@
       <section class="menu">
         <div class="data">
           <div class="infos">
-            <p >Nome</p>
-            <span>{{pedidoAtual.cliente}}</span>
+            <p>Nome</p>
+            <span>{{ pedidoAtual.cliente }}</span>
             <p>Telefone</p>
             <span>{{ pedidoAtual.telefone }}</span>
             <p>Email</p>
             <span>{{ pedidoAtual.email }}</span>
             <p>Valor</p>
-            <span>{{ pedidoAtual.valorPago}}</span>
+            <span>{{ pedidoAtual.valorPago }}</span>
             <p>Forma de pagamento</p>
             <span>{{ pedidoAtual.formaPagamento }}</span>
             <p>Data</p>
@@ -21,13 +21,13 @@
           </div>
           <div class="botoes">
             <select v-model="pedidoAtual.status">
-                <option value="0">Entregue</option>
-                <option value="1">Pago</option>
-                <option value="2">Comunicado</option>
-                <option value="3">Pendente</option>
-                <option value="4">Cancelado</option>
-              </select>
-            <button id="adicionar" v-on:click="">Confirmar</button>
+              <option value="4">Entregue</option>
+              <option value="3">Pago</option>
+              <option value="2">Comunicado</option>
+              <option value="1">Pendente</option>
+              <option value="0">Cancelado</option>
+            </select>
+            <button id="adicionar" v-on:click="attStatus()">Confirmar</button>
           </div>
         </div>
         <div class="itens">
@@ -52,9 +52,10 @@
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
 import PedidosService from '../services/PedidosService'
-import {Pedido} from '@/models/Pedido.js'
+import { Pedido } from '@/models/Pedido.js'
 
 let pedido = new Pedido()
+
 
 export default {
   name: 'InfoPedido',
@@ -66,30 +67,36 @@ export default {
       type: String
     }
   },
-  data () {
+  data() {
     return {
       pedidoAtual: pedido
     }
   },
 
-  mounted() {
-    const idDoPedido = this.$route.params.id;
-    PedidosService.getPedido(idDoPedido)
-      .then(pedidoData => {
-        this.pedidoAtual = pedidoData;
-      })
-      .catch(error => {
-        console.error('Erro ao obter os dados do pedido:', error);
-      });
-  },
-
   methods: {
-    cancelar () {
+    cancelar() {
       // var confirma = confirm('Abandonar alterações?')
       if (true) {
         this.$router.back()
       }
-    }
+    },
+    attStatus() {
+      const selectedStatus = this.pedidoAtual.status;
+
+      // Do whatever you want to do with the selected status value
+      // For example, you can call a function and pass the selectedStatus as an argument
+      this.processSelectedStatus(selectedStatus);
+    },
+    async processSelectedStatus(selectedStatus) {
+      // Your logic to handle the selected status value goes here
+      console.log('Selected Status:', selectedStatus);
+      await PedidosService.updatePedido(this.pedidoAtual.id, selectedStatus).then(() => {
+        console.log("DEU CERTO")
+      }).catch(err => console.log("Deu erro", err));
+      this.$router.back()
+    },
+
+
   }
 }
 
@@ -208,7 +215,8 @@ select {
   display: none;
 }
 
-.titulo, .titulo h1 {
+.titulo,
+.titulo h1 {
   margin: .5em 0;
 }
 
@@ -224,6 +232,7 @@ select {
   display: flex;
   justify-self: flex-start;
 }
+
 .info img {
   border: 1px solid #d9d9d9;
   border-radius: 10px;

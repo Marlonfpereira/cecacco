@@ -9,9 +9,9 @@ export default {
             this.$router.push('/erro')
         }
     },
-    async updatePedido() {
+    async updatePedido(id,status) {
         try {
-            return (await Api().patch(`/admin/pedidos/${id}`)).data
+            return (await Api().patch(`/admin/pedidos/${id}`, status)).data
         } catch (error) {
             this.$router.push('/erro')
         }
