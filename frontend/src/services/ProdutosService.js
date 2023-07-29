@@ -16,7 +16,7 @@ export default {
     async showAllProdutos() {
         try {
             let doc = await Api().get('/catalogo')
-            return doc
+            return doc.data
         } catch (error) {
             this.$router.push('/erro')
         }

@@ -3,7 +3,8 @@ const Pedido = require('../models/pedido.model');
 const AllPedidos = async (req, res) => {
     try {
         let pedidos = await Pedido.find({});
-        return res.status(200).json(pedidos);
+        res.status(200).json(pedidos);
+        return res;
     } catch (error) {
         return res.status(500).json(error);
     }
@@ -19,4 +20,14 @@ const UpdatePedido = async (req, res) => {
     }
 }
 
-module.exports = { AllPedidos, UpdatePedido };
+const getPedidoById = async (req, res) => {
+    try {
+        console.log(id)
+        let pedido = await Pedido.findById(req.id);
+        console.log(pedido);
+        return res.status(200).json(pedido);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+module.exports = { AllPedidos, UpdatePedido, getPedidoById };

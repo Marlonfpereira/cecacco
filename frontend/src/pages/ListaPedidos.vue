@@ -5,7 +5,7 @@
       <a class="return" href="./admin"><img src="@/assets/voltar.svg" alt="return"></a>
       <section class="menu">
         <div class="titulo">
-          <h1>Pedidos</h1>
+          <h1 v-on:click="showPedidos()">Pedidos</h1>
           <div>
             <p>Filtro:</p>
             <select name="" id="">
@@ -19,9 +19,9 @@
           </div>
         </div>
         <div class="scroll">
-          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id" v-on:click="abrirPedido(Object.assign({}, pedido))">
+          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id" v-on:click="abrirPedido(pedido.id)">
             <div class="info">
-              <span>{{ pedido.id }}</span>
+              <span>{{ pedido.data }}</span>
               <span>{{ pedido.cliente }}</span>
             </div>
             <div class="valores">
@@ -29,11 +29,11 @@
                 <span class="valor">R${{ pedido.valorPago }}</span>
               </div>
               <div class="atributos estados">
-                <div class="status" v-if="pedido.status == 0">
+                <div class="status" v-if="pedido.status == 4">
                   <div class="circle" style="background-color: #44b865;"></div>
                   <p>Entregue</p>
                 </div>
-                <div class="status" v-if="pedido.status == 1">
+                <div class="status" v-if="pedido.status == 3">
                   <div class="circle" style="background-color: #32ace2;"></div>
                   <p>Pago</p>
                 </div>
@@ -41,11 +41,11 @@
                   <div class="circle" style="background-color: #ffee00;"></div>
                   <p>Comunicado</p>
                 </div>
-                <div class="status" v-if="pedido.status == 3">
+                <div class="status" v-if="pedido.status == 1">
                   <div class="circle" style="background-color: #808080;"></div>
                   <p>Pendente</p>
                 </div>
-                <div class="status" v-if="pedido.status == 4">
+                <div class="status" v-if="pedido.status == 0">
                   <div class="circle" style="background-color: #e23232;"></div>
                   <p>Cancelado</p>
                 </div>
@@ -60,59 +60,33 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
+import PedidosService from '../services/PedidosService'
 import { Pedido } from '@/models/Pedido.js'
-import { Produto } from '@/models/Produto.js'
-
-var listaProd = []
-let produto = new Produto()
-produto.nome = 'Caneca'
-produto.quant = 2
-produto.preco = 99.9
-produto.imgs = ['https://images.tcdn.com.br/img/img_prod/419216/caneca_ceramica_branca_de_325ml_resinada_personalizar_por_sublimacao_1364_1_20170220231142.jpg']
-listaProd.push(produto)
-listaProd.push(produto)
-listaProd.push(produto)
-listaProd.push(produto)
-listaProd.push(produto)
-listaProd.push(produto)
-listaProd.push(produto)
-listaProd.push(produto)
-
-var pedido = new Pedido()
-pedido.itens = listaProd
-pedido.cliente = 'Fulano da Silva'
-pedido.email = 'fulano.silva@gmail.com'
-pedido.telefone = '(45) 12345-6789'
-pedido.valorPago = 125.50
-pedido.formaPagamento = 'Dinheiro'
-pedido.id = '0001'
-pedido.data = '01/12/2023'
-pedido.status = 0
 
 var lista = []
-lista.push(Object.assign({}, pedido))
-pedido.cliente = 'Ciclano da Silva'
-pedido.email = 'ciclano.silva@gmail.com'
-pedido.valorPago = 49.9
-pedido.status = 1
-pedido.id = '0002'
-lista.push(Object.assign({}, pedido))
-pedido.status = 2
-pedido.id = '0003'
-lista.push(Object.assign({}, pedido))
-pedido.status = 3
-pedido.id = '0004'
-lista.push(Object.assign({}, pedido))
-pedido.status = 4
-pedido.id = '0005'
-lista.push(Object.assign({}, pedido))
+
+await PedidosService.showAllPedidos().then((data) => {
+  data.forEach(element => {
+    var pedido = new Pedido()
+    pedido.itens = element.produtos
+    pedido.cliente = element.customerName
+    pedido.email = element.email
+    pedido.telefone = element.telefone
+    pedido.valorPago = element.totalPreco
+    pedido.custo = 0
+    pedido.formaPagamento = 'canta'
+    pedido.id = element._id
+    pedido.data = element.Data
+    pedido.status = element.estado
+    lista.push(Object.assign({}, pedido))
+  });
+})
 
 export default {
   name: 'Pedidos',
   components: {
     HeaderAdm
   },
-  props: ['lista'],
   data () {
     return {
       listaPedidos: lista
@@ -120,10 +94,7 @@ export default {
   },
   methods: {
     abrirPedido (pedido) {
-      this.$router.push({name: 'InfoPedido', params: {pedidoAtual: pedido}})
-    },
-    teste (pedido) {
-      console.log(pedido)
+      this.$router.push({name: 'InfoPedido', params: {id: pedido}})
     }
   }
 }

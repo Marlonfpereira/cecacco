@@ -40,35 +40,30 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
+import ProdutosService from '../services/ProdutosService'
 import { Produto } from '@/models/Produto.js'
 
-let produto = new Produto()
-produto.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg')
-produto.nome = 'teste'
-produto.index = 'a'
-produto.custo = 50.5
-produto.preco = 79.9
-produto.quant = 3
-produto.disp = true
-
 var lista = []
-lista.push(produto)
-produto.index = 'b'
-lista.push(produto)
-produto.index = 'c'
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
+
+await ProdutosService.showAllProdutos().then((data) => {
+  data.forEach(element => {
+    var produto = new Produto()
+    produto.nome = element.nome
+    produto.index = element._id
+    produto.imgs = element.imgs
+    produto.custo = element.custo
+    produto.preco = element.preco
+    produto.quant = element.quantidade
+    produto.disp = element.disponivel
+    lista.push(produto)
+  });
+})
 
 export default {
   name: 'Produtos',
   components: {
     HeaderAdm
   },
-  props: ['lista'],
   data () {
     return {
       listaProdutos: lista

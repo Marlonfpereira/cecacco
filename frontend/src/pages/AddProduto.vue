@@ -90,8 +90,8 @@ export default {
     }
   },
   methods: {
-   
-    addTamanho () {
+
+    addTamanho() {
       var tamanho = prompt('Adicionar:')
       this.listaTam.push(tamanho.toUpperCase())
     },
@@ -127,33 +127,16 @@ export default {
         this.$router.back()
       }
     },
-   async addProduto () {
-      // var prod = new Produto()
-      // prod.nome = document.getElementById('nome').value
-      // prod.descricao = document.getElementById('descricao').value
-      // prod.index = prod.nome.toUpperCase()
-      // prod.imgs = this.listaImgs
-      // prod.cor = this.listaCor.length > 0
-      // prod.tamanho = this.listaTam.length > 0
-      // prod.cores = this.listaCor
-      // prod.tamanhos = this.listaTam
-      // prod.disponivel = document.getElementById('disponivel').value
-      // prod.quant = document.getElementById('quant').value
-      // prod.custo = document.getElementById('custo').value
-      // prod.preco = document.getElementById('preco').value
-      // console.log(prod)
+    async addProduto() {
       this.produtoNovo.cor = this.listaCor.length > 0
       this.produtoNovo.tamanho = this.listaTam.length > 0
       this.produtoNovo.cores = this.listaCor
       this.produtoNovo.tamanhos = this.listaTam
       this.produtoNovo.imgs = this.listaImgs
-      console.log(this.produtoNovo)
 
       try {
         this.isSubmitted = true
         await ProdutosService.createProduto(this.produtoNovo)
-        let doc = await ProdutosService.showAllProdutos()
-        console.log(doc)
         this.$router.push('/admin')
       } catch (error) {
         console.log('Valores incorretos')

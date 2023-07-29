@@ -1,12 +1,12 @@
 <template>
   <div>
     <HeaderAdm :is-logged="false"></HeaderAdm>
-    <main>
+    <main v-once="getInfos(id)">
       <a class="return" v-on:click="cancelar"><img src="@/assets/voltar.svg" alt="return"></a>
       <section class="menu">
         <div class="data">
           <div class="infos">
-            <p>Nome</p>
+            <p :on-click="getInfos(id)">Nome</p>
             <span>{{pedidoAtual.cliente}}</span>
             <p>Telefone</p>
             <span>{{ pedidoAtual.telefone }}</span>
@@ -27,7 +27,7 @@
                 <option value="3">Pendente</option>
                 <option value="4">Cancelado</option>
               </select>
-            <button id="adicionar" v-on:click="teste">Confirmar</button>
+            <button id="adicionar" v-on:click="">Confirmar</button>
           </div>
         </div>
         <div class="itens">
@@ -51,26 +51,37 @@
 
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
+import PedidosService from '../services/PedidosService'
+import {Pedido} from '@/models/Pedido.js'
+
+let pedido = new Pedido()
 
 export default {
   name: 'InfoPedido',
   components: {
     HeaderAdm
   },
-  props: [ 'pedidoAtual' ],
+  props: {
+    id: {
+      type: String
+    }
+  },
   data () {
     return {
+      pedidoAtual: pedido
     }
   },
   methods: {
     cancelar () {
-      var confirma = confirm('Abandonar alterações?')
-      if (confirma) {
+      // var confirma = confirm('Abandonar alterações?')
+      if (true) {
         this.$router.back()
       }
     },
-    teste () {
-      console.log(this.pedidoAtual)
+    getInfos(id) {
+      console.log(id)
+      let info = PedidosService.getPedido(id);
+      console.log(info);
     }
   }
 }
