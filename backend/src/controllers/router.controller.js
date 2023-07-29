@@ -2,7 +2,6 @@ const express = require('express');
 const loginAdmin = require('./login.controller')
 const ProdutoControle = require('./produto.controller')
 const PedidoControle = require('./pedidos.controller');
-const { route } = require('../app');
 const router = express.Router();
 
 

@@ -1,12 +1,12 @@
 <template>
   <div>
     <HeaderAdm :is-logged="false"></HeaderAdm>
-    <main v-once="getInfos(id)">
+    <main>
       <a class="return" v-on:click="cancelar"><img src="@/assets/voltar.svg" alt="return"></a>
       <section class="menu">
         <div class="data">
           <div class="infos">
-            <p :on-click="getInfos(id)">Nome</p>
+            <p >Nome</p>
             <span>{{pedidoAtual.cliente}}</span>
             <p>Telefone</p>
             <span>{{ pedidoAtual.telefone }}</span>
@@ -71,17 +71,24 @@ export default {
       pedidoAtual: pedido
     }
   },
+
+  mounted() {
+    const idDoPedido = this.$route.params.id;
+    PedidosService.getPedido(idDoPedido)
+      .then(pedidoData => {
+        this.pedidoAtual = pedidoData;
+      })
+      .catch(error => {
+        console.error('Erro ao obter os dados do pedido:', error);
+      });
+  },
+
   methods: {
     cancelar () {
       // var confirma = confirm('Abandonar alterações?')
       if (true) {
         this.$router.back()
       }
-    },
-    getInfos(id) {
-      console.log(id)
-      let info = PedidosService.getPedido(id);
-      console.log(info);
     }
   }
 }

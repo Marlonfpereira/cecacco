@@ -21,10 +21,10 @@ const UpdatePedido = async (req, res) => {
 }
 
 const getPedidoById = async (req, res) => {
+
+   let idPedido = req.params.id
     try {
-        console.log(id)
-        let pedido = await Pedido.findById(req.id);
-        console.log(pedido);
+        let pedido = await Pedido.findById(idPedido);
         return res.status(200).json(pedido);
     } catch (error) {
         return res.status(500).json(error);
