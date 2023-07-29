@@ -33,7 +33,7 @@
 
 <script>
 import HeaderClient from '@/components/HeaderClient.vue'
-import { Cliente } from '@/models/Form.js'
+import { Pedido } from '@/models/Pedido.js'
 
 
 export default {

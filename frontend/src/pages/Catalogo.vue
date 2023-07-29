@@ -19,7 +19,7 @@ let a = new Produto()
 
 a.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg')
 a.nome = 'teste'
-a.index = 'a'
+a.index = 'a123'
 a.custo = 50.5
 a.preco = 79.9
 a.quant = 3
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     abrirProduto(id) {
-      this.$router.push({ name: 'InfoProduto', params: { produtoAtual: id } })
+      this.$router.push({ name: 'InfoProduto', params: { id: id } })
     }
   }
 }
