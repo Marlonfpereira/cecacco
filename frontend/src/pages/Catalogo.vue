@@ -2,8 +2,8 @@
   <div>
     <HeaderClient></HeaderClient>
     <main class="menu">
-      <div class="produto" v-for="prod in listaProdutos" :key="prod.index" v-on:click="abrirProduto(prod.index)">
-        <img class="img" :src="prod.imgs" alt="imagemProduto">
+      <div class="produto" v-for="prod in listaProdutos" :key="prod.index" v-on:click="abrirProduto(prod)">
+        <img class="img" :src="prod.imgs[0]" alt="imagemProduto">
         <span class="nome">{{ prod.nome }}</span>
         <span class="preco">R$ {{ prod.preco }}</span>
       </div>
@@ -14,19 +14,26 @@
 <script>
 import HeaderClient from '@/components/HeaderClient.vue'
 import { Produto } from '@/models/Produto.js'
+import ProdutosService from '../services/ProdutosService'
 
 let a = new Produto()
 
 a.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg')
-a.nome = 'teste'
 a.index = 'a123'
 a.custo = 50.5
-a.preco = 79.9
+a.nome = 'teste'
+a.preco = 10
 a.quant = 3
 a.disp = true
-a.tamanhos = ['p', 'm', 'g']
+a.cor = true
+a.cores = ['Azul', 'Preto', 'Branco']
 
 var lista = []
+lista.push(Object.assign({}, a))
+a.nome = 'Caneca'
+a.preco = 20
+a.tamanho = true
+a.tamanhos = ['p', 'm', 'g']
 lista.push(a)
 lista.push(a)
 lista.push(a)
@@ -38,7 +45,25 @@ lista.push(a)
 lista.push(a)
 lista.push(a)
 lista.push(a)
-lista.push(a)
+
+// DISABLED
+// await ProdutosService.showAllProdutos().then((data) => {
+//   data.forEach(element => {
+//     var produto = new Produto()
+//     produto.nome = element.
+//     produto.descricao = element.
+//     produto.index = element.
+//     produto.imgs = element.
+//     produto.cor = element.
+//     produto.cores = 0
+//     produto.tamanho = 'canta'
+//     produto.tamanhos = element.
+//     produto.disponivel = element.
+//     produto.quant = 1 //aq sempre tem q ser 1
+//     produto.preco = element.
+//     lista.push(Object.assign({}, produto))
+//   });
+// })
 
 export default {
   name: 'Catalogo',
@@ -51,8 +76,9 @@ export default {
     }
   },
   methods: {
-    abrirProduto(id) {
-      this.$router.push({ name: 'InfoProduto', params: { id: id } })
+    abrirProduto(prod) {
+      localStorage.setItem('produtoAtual', JSON.stringify(prod))
+      this.$router.push({ name: 'InfoProduto', params: { id: prod.index } })
     }
   }
 }

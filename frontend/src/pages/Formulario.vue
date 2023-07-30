@@ -2,30 +2,36 @@
   <div>
     <HeaderClient></HeaderClient>
     <main class="menu">
-      <div class="form">
-        <span>Nome</span>
-        <input type="text" id="nome">
-        <span>Telefone</span>
-        <input type="text" id="telefone">
-        <span>Email</span>
-        <input type="text" id="email">
-        <span>RA</span>
-        <input type="text" id="ra">
+      <div class="flex">
+        <a class="return" v-on:click="$router.go(-1)"><img src="@/assets/voltar.svg" alt="return"></a>
+        <div class="form">
+          <span>Nome</span>
+          <input type="text" class="form-control" v-model="pedidoNovo.cliente">
+          <span>Telefone</span>
+          <input type="text" class="form-control" v-model="pedidoNovo.telefone">
+          <span>Email</span>
+          <input type="text" class="form-control" v-model="pedidoNovo.email">
+        </div>
       </div>
       <div class="conta">
-        <span>Subtotal</span>
-        <span class="subtotal">R$12,00</span>
-        <span>Taxas</span>
-        <span class="subtotal">R$15,00</span>
-        <br><br><br><br>
-        <span id="tot">Total</span>
-        <span class="total">R$27,00</span>
-        <select class="pagamento">
-          <option id="dinheiro">Dinheiro</option>
-          <option id="cartao">Cartão</option>
-          <option id="pix">Pix</option>
-        </select>
-        <button class="finalizar">Finalizar Pedido</button>
+        <div>
+          <span>Subtotal</span>
+          <span class="subtotal">R${{ this.subtotal }}</span>
+          <span>Taxas</span>
+          <span class="subtotal">R${{ taxa }}</span>
+        </div>
+        <div>
+          <span id="tot">Total</span>
+          <span class="total">R${{ total }}</span>
+        </div>
+        <div>
+          <select class="pagamento" v-model="pedidoNovo.formaPagamento" v-on:change="calcTaxa()">
+            <option id="dinheiro" value="dinheiro">Dinheiro</option>
+            <option id="cartao" value="cartao">Cartão</option>
+            <option id="pix" value="pix">Pix</option>
+          </select>
+          <button class="finalizar" v-on:click="submitPedido()">Finalizar Pedido</button>
+        </div>
       </div>
     </main>
   </div>
@@ -33,98 +39,129 @@
 
 <script>
 import HeaderClient from '@/components/HeaderClient.vue'
-import { Pedido } from '@/models/Pedido.js'
-
+import { ref } from 'vue'
 
 export default {
+  setup() {
+    var listaProdutos = ref({})
+    if (localStorage.carrinho) {
+      listaProdutos.value = JSON.parse(localStorage.getItem('carrinho'))
+    }
+    var subtotal = 0
+    listaProdutos.value.forEach(produto => {
+      subtotal += produto.preco
+    });
+    return { listaProdutos, subtotal }
+  },
   name: 'Formulario',
   components: {
-    HeaderClient: HeaderClient
+    HeaderClient
   },
   data() {
     return {
+      taxa: 0,
+      total: this.subtotal,
+      pedidoNovo: {
+        itens: this.listaProdutos,
+        cliente: '',
+        email: '',
+        telefone: '',
+        valorPago: this.total,
+        formaPagamento: 'pix',
+        data: null,
+        status: 0
+      },
+      isSubmitted: false
     }
   },
+  methods: {
+    calcTaxa() {
+      if (this.pedidoNovo.formaPagamento == 'cartao') {
+        this.taxa = Math.round(this.subtotal * 0.05)
+        this.total += this.taxa
+      } else {
+        this.taxa = 0
+        this.total = this.subtotal
+      }
+    },
+    async submitPedido() {
+      if (this.pedidoNovo.cliente == '' || this.pedidoNovo.telefone == '' || this.pedidoNovo.email == '') {
+        alert("Insira seus dados")
+      }
+      console.log(this.pedidoNovo)
+
+      //algo assim para o back:
+      // try {
+      //   this.isSubmitted = true
+
+      //   await PedidosService.newPedido(this.pedidoNovo)
+      //   alert("Pedido realizado com sucesso")
+      //   this.$router.push('/catalogo')
+      // }
+    }
+  }
 }
 
 </script>
 
 <style scoped>
-body {
-  margin: 0;
-  background-color: #c7c7c7;
-}
-
-.conta {
-  background: whitesmoke;
-  border-radius: 10px;
-  border: 1px groove #d9d9d9;
-  box-sizing: border-box;
-  color: #000;
+.menu {
   display: flex;
-  flex-direction: column;
   font-family: Inter;
-  font-size: 14px;
-  font-weight: 400;
-  gap: 5px;
-  margin: 2em;
-  padding: 35px 71px 53px 46px;
-  src: url("../fonts/Inter-Regular.ttf");
-  text-align: center;
-
+  justify-content: space-between;
+  margin: 2em 4em;
 }
 
-.finalizar {
-  border-radius: 30px;
-  border: 2px solid #D9D9D9;
-  background: #307ABD;
-  color: #FFF;
-  text-align: center;
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 520;
-  height: 55px;
+.flex {
+  display: flex;
+  flex-basis: 65%;
+}
+
+.return {
+  height: fit-content;
+  margin-right: 1em;
+}
+
+.return:hover {
+  filter: invert(.1);
+  transition: .2s ease-in-out;
+}
+
+.return img {
+  height: 40px;
 }
 
 .form {
   background: whitesmoke;
   border-radius: 10px;
-  color: #000;
   display: flex;
   flex-direction: column;
-  font-family: Inter;
-  font-size: 22px;
-  font-weight: 400;
-  height: 20%;
-  margin: 2em 6em;
-  padding: 35px 71px 53px 46px;
-  src: url("../fonts/Inter-Regular.ttf");
-  width: 35%;
+  height: fit-content;
+  padding: 2em;
+  flex-basis: 100%;
 }
 
-input {
-  border-radius: 5px;
+.form input {
   border: 1px solid #808080;
-  background: #FFF;
-  box-shadow: 1.2px 1px 0px 0px rgba(0, 0, 0, 0.25) inset;
-
+  margin-bottom: 1em;
 }
 
-.menu {
+.conta {
+  background: whitesmoke;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
   display: flex;
+  flex-direction: column;
+  flex-basis: 25%;
+  height: 70vh;
   justify-content: space-between;
+  padding: 2em;
+  text-align: center;
 }
 
-.pagamento {
-  height: 55px;
-  border-radius: 30px;
-  background: #D9D9D9;
-  border: none;
-  height: 10%;
-  color: #000;
-  text-align: center;
-  font-weight: bold;
-  font-size: 16px;
+.conta>div {
+  display: flex;
+  flex-direction: column;
 }
 
 .subtotal {
@@ -135,12 +172,32 @@ input {
 
 .total {
   color: #000;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 600;
 }
 
-#tot{
-  font-size: 25px;
+#tot {
+  font-size: 20px;
 }
 
+.pagamento {
+  border-radius: 15px;
+  background: #D9D9D9;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 1em;
+  padding: .8em;
+}
+
+.finalizar {
+  border-radius: 15px;
+  border: 2px solid #D9D9D9;
+  background: #307ABD;
+  color: #FFF;
+  text-align: center;
+  font-size: 18px;
+  padding: .8em;
+}
 </style>

@@ -53,11 +53,19 @@
 import HeaderAdm from '@/components/HeaderAdm.vue'
 import PedidosService from '../services/PedidosService'
 import { Pedido } from '@/models/Pedido.js'
+import { ref } from 'vue'
 
 let pedido = new Pedido()
 
 
 export default {
+  setup() {
+    var pedidoAtual = ref({})
+    if (localStorage.pedidoAtual) {
+      pedidoAtual.value = JSON.parse(localStorage.getItem('carrinho'))
+    }
+    return { pedidoAtual }
+  },
   name: 'InfoPedido',
   components: {
     HeaderAdm
@@ -69,7 +77,7 @@ export default {
   },
   data() {
     return {
-      pedidoAtual: pedido
+      // pedidoAtual: pedido
     }
   },
 

@@ -2,36 +2,53 @@
   <div>
     <HeaderClient></HeaderClient>
     <main>
-      <a class="return" href="./admin"><img src="@/assets/voltar.svg" alt="return"></a>
-      <section class="produto">
-        <div class="imagens">
-          <div class="imgSecundaria">
-            <img v-if="produto.imgs[1] != null" v-for="im in produto.imgs" :src="im">
+      <div class="flex">
+        <a class="return" href="/catalogo"><img src="@/assets/voltar.svg" alt="return"></a>
+        <section class="produto">
+          <div class="imagens">
+            <div class="imgSecundaria scroll">
+              <img v-if="produto.imgs.length > 1" v-for="im in produto.imgs" :src="im">
+            </div>
+            <img class="imgPrincipal" :src="produto.imgs[0]">
           </div>
-          <img class="imgPrincipal" :src="produto.imgs[0]">
-        </div>
-        <div class="info">
-          <span id="nome">{{ produto.nome }}</span>
-          <span id="descri" v-if="produto.descricao != null">Descrição do produto:</span>
-          <span id="descricao" v-if="produto.descricao != null">{{ produto.descricao }}</span>
-        </div>
-      </section>
+          <div class="info">
+            <span id="nome">{{ produto.nome }}</span>
+            <span id="descri" v-if="produto.descricao != null">Descrição do produto:</span>
+            <span id="descricao" v-if="produto.descricao != null">{{ produto.descricao }}</span>
+          </div>
+        </section>
+      </div>
       <section class="compra">
-        <span id="preco">R${{ produto.preco }}</span>
-        <hr size="5">
-        <div class="pagamentos">
-          <div class="logos">
-            <img src="@/assets/pix.svg">
-            <img src="@/assets/cartao.svg">
+        <div>
+          <span id="preco">R${{ produto.preco }}</span>
+          <div class="pagamentos">
+            <div class="logos">
+              <img src="@/assets/pix.svg">
+              <img src="@/assets/cartao.svg">
+            </div>
+            <span id="disp" v-if="produto.disp">Em estoque</span>
+            <span id="naodisp" v-else>Indisponível</span>
           </div>
-          <span id="disp" v-if="produto.disp">Em estoque</span>
-          <span id="naodisp" v-else>Indisponível</span>
+          <div class="variantes" v-if="produto.tamanho == true">
+            <span> Selecionar tamanho:</span>
+            <div class="btn-group opcoes" role="tamanho">
+              <div v-for="tamanho in produto.tamanhos">
+                <input type="radio" class="btn-check" name="tamanho" :id="tamanho" @click="mudaTamanho(tamanho)">
+                <label class="btn btn-outline-primary" :for="tamanho">{{ tamanho }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="variantes" v-if="produto.cor == true">
+            <span> Selecionar Cor:</span>
+            <div class="btn-group opcoes" role="cor">
+              <div v-for="cor in produto.cores">
+                <input type="radio" class="btn-check" name="cor" :id="cor" @click="mudaCor(cor)">
+                <label class="btn btn-outline-primary" :for="cor">{{ cor }}</label>
+              </div>
+            </div>
+          </div>
         </div>
-        <span v-if="produto.tamanhos != null"> Selecionar tamanho:</span>
-        <div class="tam">
-          <button id="tamanhos" v-if="produto.tamanhos != null" v-for="t in produto.tamanhos">{{ t }} </button>
-        </div>
-        <button id="carrinho">Adicionar ao carrinho</button>
+        <button id="carrinho" v-on:click="addCarrinho()">Adicionar ao carrinho</button>
       </section>
     </main>
   </div>
@@ -40,35 +57,63 @@
 <script>
 import HeaderClient from '@/components/HeaderClient.vue'
 import { Produto } from '@/models/Produto.js'
+import { ref } from 'vue'
 
 export default {
+  setup() {
+    var produto = ref({})
+    if (localStorage.produtoAtual) {
+      produto.value = JSON.parse(localStorage.getItem('produtoAtual'))
+    }
+    return { produto }
+  },
   name: 'InfoProduto',
   components: {
-    HeaderClient: HeaderClient
+    HeaderClient
   },
-  props: ['produtoAtual'],
+  props: ['id'],
   data() {
-    let a = new Produto();
-
-    a.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg');
-    a.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg');
-    a.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg');
-    a.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg');
-    a.nome = 'teste';
-    a.id = '1234567';
-    a.nome = 'teste';
-    a.descricao = ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et ante est. Sed dolor urna, tempor nec est vitae, fermentum varius neque. Morbi quis placerat sem. Vestibulum laoreet, odio vel porta sodales, nulla nisi elementum magna, non consectetur mauris sapien id magna. Maecenas vel cursus diam. Nulla pulvinar pharetra velit, ac tempus ante blandit sit amet. Mauris porttitor ultricies arcu vitae fermentum. In elit turpis, condimentum id pharetra sed, pharetra ut erat. Phasellus vitae lorem sapien. Nullam vestibulum dolor in tellus ultrices dictum.';
-    a.index = 'a';
-    a.custo = 50.5;
-    a.preco = 79.9;
-    a.quant = 3;
-    a.disp = true;
-    a.tamanhos = ['p', 'm', 'g'];
 
     return {
-      produto: a
+      // produto: this.produtoAtual,
+      tamanho: null,
+      cor: null
     };
   },
+  methods: {
+    testee() {
+      console.log(this.tamanho, this.cor)
+    },
+    mudaTamanho(tamanho) {
+      this.tamanho = tamanho
+    },
+    mudaCor(cor) {
+      this.cor = cor
+    },
+    addCarrinho() {
+      if (this.tamanho == null && this.produto.tamanho != false) {
+        alert("Selecione um tamanho")
+        return
+      }
+      if (this.cor == null && this.produto.cor != false) {
+        alert("Selecione uma cor")
+        return
+      }
+      this.produto.tamanho = this.tamanho
+      this.produto.cor = this.cor
+
+      if (localStorage.carrinho) {
+        var carrinho = JSON.parse(localStorage.getItem('carrinho'))
+        carrinho.push(this.produto)
+        localStorage.setItem('carrinho', JSON.stringify(carrinho))
+      } else {
+        var carrinho = []
+        carrinho.push(this.produto)
+        localStorage.setItem('carrinho', JSON.stringify(carrinho))
+      }
+      this.$router.push('/carrinho')
+    }
+  }
 }
 </script>
 
@@ -77,11 +122,17 @@ main {
   display: flex;
   justify-content: space-between;
   font-family: Inter;
-  margin: 2em;
+  margin: 0 1em;
+  margin-top: 2em;
+}
+
+.flex {
+  display: flex;
 }
 
 .return {
   height: fit-content;
+  margin-right: 1em;
 }
 
 .return:hover {
@@ -98,30 +149,41 @@ main {
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
-  height: 74vh;
+  height: 73vh;
+  padding-top: 1em;
   width: 65vw;
 }
 
 .imagens {
   border-radius: 30px;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  flex-direction: row;
-  /* flex-basis: 70%; */
+  flex-basis: 70%;
   /* width: 40vw; */
 }
 
 .imgSecundaria {
-  margin-top: 1em;
   display: flex;
   overflow-y: scroll;
   flex-direction: column;
-  height: 50vh;
+  height: 100%;
+}
+
+.scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  height: calc(72vh - 2em);
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .imgSecundaria img {
   border-radius: 20px;
-  margin: 0 .5em 1em .5em;
+  margin: .5em .5em;
   border: 1px solid rgba(0, 0, 0, 0.25);
   width: 8vw;
 }
@@ -129,37 +191,31 @@ main {
 .imgPrincipal {
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  margin: 1em .5em 1em 0.5em;
-  height: 60%;
-  width: 60%;
+  margin-left: 0.5em;
+  height: 25em;
+  width: 25em;
 }
 
 .info {
-  margin-top: 1em;
   margin-right: 1em;
   display: flex;
   flex-direction: column;
-  flex-basis: 30%;
+  flex-basis: 35%;
 }
 
 #nome {
-  color: #000;
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 1em;
 }
 
 #descri {
-  color: #000;
   font-size: 20px;
-  font-weight: 400;
   margin-bottom: 0.5em
 }
 
 #descricao {
-  color: #000;
   font-size: 14px;
-  font-weight: 400;
 }
 
 .compra {
@@ -168,35 +224,42 @@ main {
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  margin-right: 1em;
+  padding: 2em 0;
   text-align: center;
-  width: 25vw;
-  height: 55vh;
+  width: 23vw;
+}
+
+.compra>div {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 #preco {
-  margin-top: 1rem;
-  color: #000;
-  text-align: center;
   font-size: 32px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
-}
-
-.compra hr {
-  color: black;
-  width: 15vw;
 }
 
 .pagamentos {
-  display: flex;
   align-items: center;
+  border-top: solid 1px #808080;
+  display: flex;
   justify-content: space-between;
-  width: 15vw;
   margin-bottom: 2em;
+  width: 15vw;
 }
 
-#disp, #naodisp {
+.pagamentos img {
+  margin-right: .2em;
+  margin-top: .1em;
+  width: 2em;
+}
+
+#disp,
+#naodisp {
   text-align: center;
   font-size: 13px;
   font-style: normal;
@@ -204,48 +267,37 @@ main {
   line-height: normal;
 }
 
-#disp{
+#disp {
   color: #44B865;
 }
 
-#naodisp{
+#naodisp {
   color: #E23232;
 }
 
-.tam {
-  display: flex;
-  margin-bottom: 2em;
+.variantes {
+  margin-bottom: 1em;
+  width: 100%;
 }
 
-#tamanhos {
-  align-items: center;
-  background: #d9d9d9;
-  border-radius: 50px;
-  border: none;
-  outline: none;
-  color: #ffffff;
-  display: flex;
-  flex-shrink: 0;
-  font-size: 16px;
-  font-weight: 600;
-  height: 41px;
-  justify-content: center;
-  line-height: normal;
-  margin: .4em .4em;
-  padding: 11px 0px 10.525px 0px;
-  text-align: center;
-  width: 41px;
+.opcoes {
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: .3em;
+  column-gap: .3em;
+  justify-content: space-around;
+  margin: auto;
+  width: 70%;
 }
 
 #carrinho {
-  border-radius: 30px;
+  border-radius: 20px;
   border: 2px solid #D9D9D9;
   background: #307ABD;
   color: #FFF;
+  padding: 1em;
   text-align: center;
-  font-family: Inter;
   font-size: 18px;
-  font-weight: 520;
-  height: 55px;
 }
 </style>

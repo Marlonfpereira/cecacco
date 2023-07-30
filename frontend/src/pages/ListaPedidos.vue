@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="scroll">
-          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id" v-on:click="abrirPedido(pedido.id)">
+          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id" v-on:click="abrirPedido(pedido)">
             <div class="info">
               <span>{{ pedido.data }}</span>
               <span>{{ pedido.cliente }}</span>
@@ -94,7 +94,8 @@ export default {
     }
   },
   methods: {
-    abrirPedido (pedido) {
+    abrirPedido(pedido) {
+      localStorage.setItem('pedidoAtual', pedido)
       this.$router.push({name: 'InfoPedido', params: {id: pedido}})
     }
   }

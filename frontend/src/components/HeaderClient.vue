@@ -5,8 +5,8 @@
       <h1 class="name">CACCo</h1>
     </div>
     <nav class="nav">
-      <a href="catalogo" id="catalogo" class="button">Catálogo</a>
-      <a href="carrinho" id="carrinho" class="button">
+      <a href="/catalogo" id="catalogo" class="button">Catálogo</a>
+      <a href="/carrinho" id="carrinho" class="button">
         <img class="carrinho" src="@/assets/carrinho.svg" alt="Carrinho" fit />
       </a>
     </nav>
@@ -43,8 +43,8 @@ body {
 }
 
 .imgLogo {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   margin: 10px;
 }
 
