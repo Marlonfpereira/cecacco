@@ -63,12 +63,6 @@ export default {
     var produtos = []
     if (localStorage.pedidoAtual) {
       pedidoAtual.value = JSON.parse(localStorage.getItem('pedidoAtual'))
-      console.log(pedidoAtual.value)
-      // pedidoAtual.value.itens.forEach(element => {
-      // ProdutosService.getPedido(element.id).then(
-      //   data => produtos.push(data)
-      // )
-      // });
     }
     return { pedidoAtual , produtos }
   },
@@ -88,7 +82,6 @@ export default {
 
   methods: {
     cancelar() {
-      // var confirma = confirm('Abandonar alterações?')
       if (true) {
         this.$router.back()
       }
@@ -96,9 +89,8 @@ export default {
     attStatus() {
       let status = this.pedidoAtual.status
       let id = this.pedidoAtual.id
-      PedidosService.updatePedido(id, status).then(()=>
-        this.$router.push("/pedidos")
-        // this.$router.
+      PedidosService.updatePedido(id, status).then(() =>
+        window.location.replace('/pedidos')
       ).catch(()=>this.$router.push("/erro"))
     }
   }
