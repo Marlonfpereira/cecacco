@@ -18,4 +18,9 @@ router.get('/admin/pedidos', PedidoControle.AllPedidos);
 router.get('/admin/pedidos/:id', PedidoControle.getPedidoById)
 router.patch('/admin/pedidos/:id', PedidoControle.UpdatePedido);
 
+router.get('/admin/produtos/:id', ProdutoControle.getProdutoById);
+
+router.post('/newPedido', PedidoControle.CreatePedido)
+
+
 module.exports = router;

@@ -11,7 +11,10 @@ export default {
     },
     async updatePedido(id,status) {
         try {
-            return (await Api().patch(`/admin/pedidos/${id}`, status)).data
+            let newStatus = {
+                estado: status
+            }
+            return (await Api().patch(`/admin/pedidos/${id}`, newStatus)).data
         } catch (error) {
             this.$router.push('/erro')
         }
@@ -22,5 +25,13 @@ export default {
         } catch (error) {
             this.$router.push('/erro')
         }
-    }
+    },
+    async newPedido(pedido) {
+        try {
+            await Api().post('/newPedido', pedido)
+        } catch (error) {
+            this.$router.push('/erro')
+        }
+    },
+    
 }

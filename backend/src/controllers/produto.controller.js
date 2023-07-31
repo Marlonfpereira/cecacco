@@ -38,5 +38,18 @@ const deleteProduto = async (req, res) => {
     }
 }
 
+const getProdutoById = async (req, res) => {
+  
+    let id = req.params.id
+    if (!id) {
+        id = req.body.id;
+    }
+    try {
+        await Link.findById(id)
+    } catch (error) {
+        res.send(error);
+    }
+}
 
-module.exports = {CreateProduto, AllProdutos, deleteProduto};
+
+module.exports = {CreateProduto, AllProdutos,getProdutoById , deleteProduto};

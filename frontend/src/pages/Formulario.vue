@@ -6,7 +6,7 @@
         <a class="return" v-on:click="$router.go(-1)"><img src="@/assets/voltar.svg" alt="return"></a>
         <div class="form">
           <span>Nome</span>
-          <input type="text" class="form-control" v-model="pedidoNovo.cliente">
+          <input type="text" class="form-control" v-model="pedidoNovo.customerName">
           <span>Telefone</span>
           <input type="text" class="form-control" v-model="pedidoNovo.telefone">
           <span>Email</span>
@@ -39,6 +39,7 @@
 
 <script>
 import HeaderClient from '@/components/HeaderClient.vue'
+import PedidosService from '../services/PedidosService'
 import { ref } from 'vue'
 
 export default {
@@ -49,7 +50,7 @@ export default {
     }
     var subtotal = 0
     listaProdutos.value.forEach(produto => {
-      subtotal += produto.preco
+      subtotal += produto.preco * produto.quant
     });
     return { listaProdutos, subtotal }
   },
@@ -62,14 +63,14 @@ export default {
       taxa: 0,
       total: this.subtotal,
       pedidoNovo: {
-        itens: this.listaProdutos,
-        cliente: '',
+        produtos: [],
+        customerName: '',
         email: '',
         telefone: '',
-        valorPago: this.total,
+        totalPreco: this.total,
         formaPagamento: 'pix',
         data: null,
-        status: 0
+        estado: 1
       },
       isSubmitted: false
     }
@@ -85,19 +86,35 @@ export default {
       }
     },
     async submitPedido() {
-      if (this.pedidoNovo.cliente == '' || this.pedidoNovo.telefone == '' || this.pedidoNovo.email == '') {
+      if (this.pedidoNovo.customerName == '' || this.pedidoNovo.telefone == '' || this.pedidoNovo.email == '') {
         alert("Insira seus dados")
       }
+      this.pedidoNovo.totalPreco = this.total
+
+      this.listaProdutos.forEach(produto => {
+        let variacoes = {
+          cores: produto.cor,
+          tamanhos: produto.tamanho
+        }
+        let prodPedido = {
+          productId: produto.index,
+          quantidade: produto.quant,
+          preco: produto.preco,
+          variations: variacoes
+        }
+        this.pedidoNovo.produtos.push(prodPedido)
+      });
+
       console.log(this.pedidoNovo)
 
-      //algo assim para o back:
-      // try {
-      //   this.isSubmitted = true
+      try {
+        this.isSubmitted = true
+        await PedidosService.newPedido(this.pedidoNovo)
+        this.$router.push('/catalogo')
+      } catch (error) {
+        console.log('Valores incorretos')
+      }
 
-      //   await PedidosService.newPedido(this.pedidoNovo)
-      //   alert("Pedido realizado com sucesso")
-      //   this.$router.push('/catalogo')
-      // }
     }
   }
 }

@@ -27,20 +27,20 @@
               <option value="1">Pendente</option>
               <option value="0">Cancelado</option>
             </select>
-            <button id="adicionar" v-on:click="attStatus()">Confirmar</button>
+            <button id="adicionar" v-on:click="attStatus">Confirmar</button>
           </div>
         </div>
         <div class="itens">
           <div class="scroll">
             <div class="produto" v-for="prod in pedidoAtual.itens" :key="prod.index">
-              <div class="info">
+              <!-- <div class="info">
                 <img :src="prod.imgs[0]" alt="imagemProduto">
                 <span>{{ prod.nome }}</span>
-              </div>
-              <div class="valores">
-                <span class="quant">Quantidade: {{ prod.quant }}</span>
+              </div> -->
+              <!-- <div class="valores"> -->
+                <span class="quant">Quantidade: {{ prod.quantidade }}</span>
                 <span class="valor">R${{ prod.preco }}</span>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>
@@ -52,35 +52,25 @@
 <script>
 import HeaderAdm from '@/components/HeaderAdm.vue'
 import PedidosService from '../services/PedidosService'
+import ProdutosService from '../services/ProdutosService'
 import { Pedido } from '@/models/Pedido.js'
+
 import { ref } from 'vue'
-
-let pedido = new Pedido()
-
-await PedidosService.getPedido().then((element) => {
-  pedido.itens = element.produtos
-  pedido.cliente = element.customerName
-  pedido.email = element.email
-  pedido.telefone = element.telefone
-  pedido.valorPago = element.totalPreco
-  pedido.custo = 0
-  pedido.formaPagamento = 'cartão'
-  pedido.id = element._id
-  pedido.data = element.Data
-  pedido.status = element.estado
-});
-
-
-
-
 
 export default {
   setup() {
     var pedidoAtual = ref({})
+    var produtos = []
     if (localStorage.pedidoAtual) {
-      pedidoAtual.value = JSON.parse(localStorage.getItem('carrinho'))
+      pedidoAtual.value = JSON.parse(localStorage.getItem('pedidoAtual'))
+      console.log(pedidoAtual.value)
+      // pedidoAtual.value.itens.forEach(element => {
+      // ProdutosService.getPedido(element.id).then(
+      //   data => produtos.push(data)
+      // )
+      // });
     }
-    return { pedidoAtual }
+    return { pedidoAtual , produtos }
   },
   name: 'InfoPedido',
   components: {
@@ -93,7 +83,6 @@ export default {
   },
   data() {
     return {
-      // pedidoAtual: pedido
     }
   },
 
@@ -104,16 +93,15 @@ export default {
         this.$router.back()
       }
     },
-    montarDados() {
-      id = this.$router.id;
-      console.log(id)
+    attStatus() {
+      let status = this.pedidoAtual.status
+      let id = this.pedidoAtual.id
+      PedidosService.updatePedido(id, status).then(()=>
+        this.$router.push("/pedidos")
+        // this.$router.
+      ).catch(()=>this.$router.push("/erro"))
     }
-
-
   }
-
-
-
 }
 
 </script>
@@ -237,9 +225,10 @@ select {
 }
 
 .produto {
+  align-items: center;
   border-bottom: 2px solid #d9d9d9;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: .5em 0;
 }
 

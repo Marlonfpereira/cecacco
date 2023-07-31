@@ -20,5 +20,12 @@ export default {
         } catch (error) {
             this.$router.push('/erro')
         }
+    },
+    async getPedido(id){
+        try {
+            return (await Api().get(`/admin/produtos/${id}`)).data
+        } catch (error) {
+            this.$router.push('/erro')
+        }
     }
 }

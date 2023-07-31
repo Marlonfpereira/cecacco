@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     abrirPedido(pedido) {
-      localStorage.setItem('pedidoAtual', pedido)
+      localStorage.setItem('pedidoAtual', JSON.stringify(pedido))
       this.$router.push({name: 'InfoPedido', params: {id: pedido}})
     }
   }

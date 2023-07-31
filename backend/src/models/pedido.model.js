@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 // Crie um subesquema para representar as variações de um produto
 const variacoesSchema = new mongoose.Schema({
-    cores: { type: String, required: true, default: "" },
-    tamanhos: { type: String, required: true, default: ""},
+    cores: { type: String, required: false, default: "" },
+    tamanhos: { type: String, required: false, default: ""},
     // Outras variações que você deseja incluir
 });
 
