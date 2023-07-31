@@ -3,7 +3,7 @@
     <HeaderAdm :is-logged="false"></HeaderAdm>
     <main>
       <a class="return" v-on:click="cancelar"><img src="@/assets/voltar.svg" alt="return"></a>
-      <section class="menu">
+      <section v-on:click="montarDados" class="menu">
         <div class="data">
           <div class="infos">
             <p>Nome</p>
@@ -53,8 +53,25 @@
 import HeaderAdm from '@/components/HeaderAdm.vue'
 import PedidosService from '../services/PedidosService'
 import { Pedido } from '@/models/Pedido.js'
+import router from '../router'
 
 let pedido = new Pedido()
+
+await PedidosService.getPedido().then((element) => {
+  pedido.itens = element.produtos
+  pedido.cliente = element.customerName
+  pedido.email = element.email
+  pedido.telefone = element.telefone
+  pedido.valorPago = element.totalPreco
+  pedido.custo = 0
+  pedido.formaPagamento = 'cartão'
+  pedido.id = element._id
+  pedido.data = element.Data
+  pedido.status = element.estado
+});
+
+
+
 
 
 export default {
@@ -80,24 +97,16 @@ export default {
         this.$router.back()
       }
     },
-    attStatus() {
-      const selectedStatus = this.pedidoAtual.status;
-
-      // Do whatever you want to do with the selected status value
-      // For example, you can call a function and pass the selectedStatus as an argument
-      this.processSelectedStatus(selectedStatus);
-    },
-    async processSelectedStatus(selectedStatus) {
-      // Your logic to handle the selected status value goes here
-      console.log('Selected Status:', selectedStatus);
-      await PedidosService.updatePedido(this.pedidoAtual.id, selectedStatus).then(() => {
-        console.log("DEU CERTO")
-      }).catch(err => console.log("Deu erro", err));
-      this.$router.back()
-    },
+    montarDados() {
+      id = this.$router.id;
+      console.log(id)
+    }
 
 
   }
+
+
+
 }
 
 </script>

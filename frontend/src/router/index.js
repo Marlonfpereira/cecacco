@@ -62,7 +62,7 @@ const router = createRouter({
       component: Catalogo
     },
     {
-      path: '/catalogo/:id',
+      path: '/catalogo/',
       name: 'InfoProduto',
       props: true,
       component: InfoProduto

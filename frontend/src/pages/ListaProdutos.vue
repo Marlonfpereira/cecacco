@@ -45,20 +45,19 @@ import { Produto } from '@/models/Produto.js'
 
 var lista = []
 
-// DISABLED
-// await ProdutosService.showAllProdutos().then((data) => {
-//   data.forEach(element => {
-//     var produto = new Produto()
-//     produto.nome = element.nome
-//     produto.index = element._id
-//     produto.imgs = element.imgs
-//     produto.custo = element.custo
-//     produto.preco = element.preco
-//     produto.quant = element.quantidade
-//     produto.disp = element.disponivel
-//     lista.push(produto)
-//   });
-// })
+await ProdutosService.showAllProdutos().then((data) => {
+  data.forEach(element => {
+    var produto = new Produto()
+    produto.nome = element.nome
+    produto.index = element._id
+    produto.imgs = element.imgs
+    produto.custo = element.custo
+    produto.preco = element.preco
+    produto.quant = element.quantidade
+    produto.disp = element.disponivel
+    lista.push(produto)
+  });
+})
 
 export default {
   name: 'Produtos',

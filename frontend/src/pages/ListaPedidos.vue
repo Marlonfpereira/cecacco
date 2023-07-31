@@ -65,37 +65,40 @@ import { Pedido } from '@/models/Pedido.js'
 
 var lista = []
 
-// DISABLED
-// await PedidosService.showAllPedidos().then((data) => {
-//   data.forEach(element => {
-//     var pedido = new Pedido()
-//     pedido.itens = element.produtos
-//     pedido.cliente = element.customerName
-//     pedido.email = element.email
-//     pedido.telefone = element.telefone
-//     pedido.valorPago = element.totalPreco
-//     pedido.custo = 0
-//     pedido.formaPagamento = 'canta'
-//     pedido.id = element._id
-//     pedido.data = element.Data
-//     pedido.status = element.estado
-//     lista.push(Object.assign({}, pedido))
-//   });
-// })
+
+await PedidosService.showAllPedidos().then((data) => {
+  data.forEach(element => {
+    var pedido = new Pedido()
+    pedido.itens = element.produtos
+    pedido.cliente = element.customerName
+    pedido.email = element.email
+    pedido.telefone = element.telefone
+    pedido.valorPago = element.totalPreco
+    pedido.custo = 0
+    pedido.formaPagamento = 'canta'
+    pedido.id = element._id
+    pedido.data = element.Data
+    pedido.status = element.estado
+    lista.push(Object.assign({}, pedido))
+  });
+})
 
 export default {
   name: 'Pedidos',
   components: {
     HeaderAdm
   },
-  data () {
+  data() {
     return {
       listaPedidos: lista
     }
   },
   methods: {
-    abrirPedido (pedido) {
-      this.$router.push({name: 'InfoPedido', params: {id: pedido}})
+    abrirPedido(pedido) {
+      // Exemplo de navegação para a rota com o objeto como parâmetro usando query
+      // this.$router.push({ name: 'InfoPedido', query: { objeto: JSON.stringify(pedido) } });
+
+      this.$router.push({ name: 'InfoPedido', params: { id: pedido } })
     }
   }
 }
@@ -150,7 +153,7 @@ p {
   display: none;
 }
 
-.titulo{
+.titulo {
   display: flex;
   justify-content: space-between;
 }
