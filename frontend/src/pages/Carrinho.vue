@@ -5,23 +5,33 @@
       <section class="menu">
         <div class="listaProd scroll">
           <div class="produto" v-for="prod in listaProdutos" :key="prod.index">
-            <div class="info">
+            <div class="atributos">
               <img :src="prod.imgs[0]" alt="imagemProduto">
-              <span>{{ prod.nome }}</span>
-              <span v-if="prod.tamanho == true">{{ prod.tamanho }} </span>
-              <span v-if="prod.cor == true">{{ prod.cor }} </span>
-              <button class="quantidade" v-on:click="menos(0)">-</button>
-              <span id="quanti">{{ prod.quant }}<span> </span></span>
-              <button class="quantidade" v-on:click="mais(0)">+</button>
-              <button id="remover" v-on:click="remove(0)">remover</button>
+              <div class="mais">
+                <span>{{ prod.nome }}</span><br>
+                <span id="adicional" v-if="prod.tamanho != false">{{ prod.tamanho }} </span>
+                <span id="adicional" v-if="prod.cor != false">{{ prod.cor }} </span>
+              </div>
+            </div>
+            <div class="gerenciarquant">
+              <div class="quantidade">
+                <button v-on:click="menos(prod)">-</button>
+                <input type="number" id="quanti" v-model="prod.quant" readonly>
+                <button v-on:click="mais(prod)">+</button>
+              </div>
+              <button id="remover" v-on:click="remove(prod)">remover</button>
             </div>
           </div>
         </div>
         <div class="conta">
-          <span>Subtotal</span>
-          <span class="subtotal">R$12,00</span>
-          <button class="add">Adicionar mais itens</button>
-          <button class="finalizar">Finalizar Pedido</button>
+          <div>
+            <span>Subtotal</span>
+            <span class="subtotal">R${{ this.preco }}</span>
+          </div>
+          <div>
+            <a class="add" href="/catalogo">Adicionar mais itens</a>
+            <a class="finalizar" href="/formulario">Finalizar Pedido</a>
+          </div>
         </div>
       </section>
     </main>
@@ -30,52 +40,56 @@
 
 <script>
 import HeaderClient from '@/components/HeaderClient.vue'
-import { Produto } from '@/models/Produto.js'
-
-let produto = new Produto()
-produto.imgs.push('https://http2.mlstatic.com/caneca-branca-porcelana-resinada-aaa-sublimaco-48-unds-orca-D_NQ_NP_869418-MLB31100747149_062019-F.jpg')
-produto.nome = 'teste'
-produto.index = 'a'
-produto.custo = 50.5
-produto.preco = 79.9
-produto.quant = 3
-produto.disp = true
-
-var lista = []
-lista.push(produto)
-produto.index = 'b'
-lista.push(produto)
-produto.index = 'c'
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
-lista.push(produto)
+import { ref } from 'vue'
 
 export default {
+  setup() {
+    var listaProdutos = ref({})
+    var preco = 0
+    if (localStorage.carrinho) {
+      listaProdutos.value = JSON.parse(localStorage.getItem('carrinho'))
+      listaProdutos.value.forEach(produto => {
+        preco += produto.preco
+      });
+      preco = parseFloat(preco.toFixed(2))
+    }
+    return { listaProdutos, preco }
+  },
   name: 'Produtos',
   components: {
     HeaderClient
   },
-  props: ['lista'],
   data() {
     return {
-      listaProdutos: lista
+      subtotal: 0
     }
   },
 
   methods: {
-    menos(index) {
-      if (this.listaProdutos[index].quant > 0) {
-        this.listaProdutos[index].quant -= 1;
+    menos(prod) {
+      if (prod.quant > 1) {
+        prod.quant -= 1;
+        localStorage.setItem('carrinho', JSON.stringify(this.listaProdutos))
+        this.preco -= prod.preco
+        this.preco = parseFloat(this.preco.toFixed(2))
       }
     },
-    mais(index) {
-      this.listaProdutos[index].quant += 1;
+    mais(prod) {
+      prod.quant += 1;
+      localStorage.setItem('carrinho', JSON.stringify(this.listaProdutos))
+      this.preco += prod.preco
+      this.preco = parseFloat(this.preco.toFixed(2))
     },
-    remove(index) {
-      this.listaProdutos.pop(index);
+    remove(prod) {
+      if (confirm("Remover item do carrinho?")) {
+        console.log(this.listaProdutos.indexOf(prod))
+        this.listaProdutos.splice(this.listaProdutos.indexOf(prod), 1)
+        localStorage.setItem('carrinho', JSON.stringify(this.listaProdutos))
+        for (let i = 0; i < prod.quant; i++) {
+          this.preco -= prod.preco
+        }
+        this.preco = parseFloat(this.preco.toFixed(2))
+      }
     }
   }
 }
@@ -90,43 +104,6 @@ main {
   justify-content: center;
 }
 
-.add {
-  border-radius: 30px;
-  border: 2px solid #D9D9D9;
-  background: #808080;
-}
-.add, .finalizar {
-  color: #FFF;
-  text-align: center;
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.conta {
-  background: whitesmoke;
-  border-radius: 10px;
-  border: 1px groove #d9d9d9;
-  box-sizing: border-box;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 400;
-  gap: 5px;
-  margin: 2em;
-  padding: 35px 71px 53px 46px;
-  src: url("../fonts/Inter-Regular.ttf");
-  text-align: center;
-
-}
-.finalizar {
-  border-radius: 30px;
-  border: 2px solid #D9D9D9;
-  background: #307ABD;
-}
-
 .menu {
   display: flex;
   justify-content: space-between;
@@ -134,24 +111,95 @@ main {
   box-sizing: border-box;
   font-family: 'Inter', Inter;
   font-weight: 100;
-  flex-basis: 70%;
+  flex-basis: 85%;
   height: 72vh;
-  margin: 2em;
+  margin-top: 3em;
+}
+
+.listaProd {
+  background: whitesmoke;
+  border: 1px groove #d9d9d9;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-family: 'Inter', Inter;
+  font-weight: 100;
+  flex-basis: 70%;
+  margin-right: 3em;
   padding: 0 2em;
 }
 
-.return {
-  margin: 2em 0 0 0;
-  height: fit-content;
+.scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
 }
 
-.return:hover {
-  filter: invert(.1);
-  transition: .2s ease-in-out;
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 
-.return img {
-  height: 40px;
+.produto {
+  border-bottom: 2px solid #d9d9d9;
+  display: flex;
+  justify-content: space-between;
+  padding: .5em 2em;
+}
+
+.atributos {
+  align-items: center;
+  display: flex;
+  justify-self: flex-start;
+}
+
+.atributos img {
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  width: 4em;
+}
+
+.atributos span {
+  font-weight: bold;
+  margin-left: 1em;
+}
+
+#adicional {
+  color: #000;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.gerenciarquant {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.quantidade {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.quantidade button {
+  border: none;
+  border-radius: 50%;
+  background-color: #D9D9D9;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  outline: none;
+  width: 1.5em;
+}
+
+#quanti {
+  background-color: whitesmoke;
+  border: none;
+  text-align: center;
+  width: 2em;
 }
 
 #remover {
@@ -163,96 +211,58 @@ main {
   text-decoration-line: underline;
 }
 
-
-.listaProd {
+.conta {
+  align-items: center;
   background: whitesmoke;
-  border: 1px groove #d9d9d9;
   border-radius: 10px;
+  border: 1px groove #d9d9d9;
   box-sizing: border-box;
-  font-family: 'Inter', Inter;
-  font-weight: 100;
-  flex-basis: 70%;
-  height: 72vh;
-  margin: 2em;
-  padding: 0 2em;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: space-between;
+  padding: 2em 0;
+  text-align: center;
+  width: 30vw;
+  height: 45vh;
 }
 
-.scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-y: scroll;
-  height: calc(72vh - 6em);
-}
-
-.scroll::-webkit-scrollbar {
-  display: none;
+.conta div {
+  display: flex;
+  flex-direction: column;
 }
 
 .subtotal {
   color: #000;
   text-align: center;
   font-family: Inter;
-  font-size: 30px;
+  font-size: 28px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
 
-.titulo,
-.titulo h1 {
-  margin: .5em 0;
+.add {
+  background: #808080;
+  text-decoration: none;
 }
 
-
-.produto {
-  border-bottom: 2px solid #d9d9d9;
-  display: flex;
-  justify-content: space-between;
-  padding: .5em 2em;
-}
-
-.info {
-  align-items: center;
-  display: flex;
-  justify-self: flex-start;
-}
-
-.info img {
-  border: 1px solid #d9d9d9;
-  border-radius: 10px;
-  width: 4em;
-}
-
-.info span {
-  font-weight: bold;
-  margin-left: 1em;
-}
-
-.valores {
-  align-items: center;
-  column-gap: .4em;
-  display: grid;
-  font-size: .8em;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  width: 70%;
-}
-
-.atributos {
-  display: flex;
-  flex-direction: column;
-  pointer-events: none;
+.add,
+.finalizar {
+  border-radius: 15px;
+  border: 2px solid #D9D9D9;
+  color: #FFF;
   text-align: center;
-}
-
-.quantidade {
-  border: none;
-  border-radius: 50%;
-  background-color: #D9D9D9;
-  color: #ffffff;
+  font-family: Inter;
   font-size: 18px;
-  cursor: pointer;
-  outline: none;
-  font-weight: bold;
+  padding: .5em;
 }
 
+.finalizar {
+  margin-top: 1em;
+  background: #307ABD;
+  text-decoration: none;
+}
 </style>

@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="scroll">
-          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id" v-on:click="abrirPedido(pedido.id)">
+          <div class="pedido" v-for="pedido in listaPedidos" :key="pedido.id" v-on:click="abrirPedido(pedido)">
             <div class="info">
               <span>{{ pedido.data }}</span>
               <span>{{ pedido.cliente }}</span>
@@ -95,10 +95,8 @@ export default {
   },
   methods: {
     abrirPedido(pedido) {
-      // Exemplo de navegação para a rota com o objeto como parâmetro usando query
-      // this.$router.push({ name: 'InfoPedido', query: { objeto: JSON.stringify(pedido) } });
-
-      this.$router.push({ name: 'InfoPedido', params: { id: pedido } })
+      localStorage.setItem('pedidoAtual', pedido)
+      this.$router.push({name: 'InfoPedido', params: {id: pedido}})
     }
   }
 }
